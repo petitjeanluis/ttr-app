@@ -1,11 +1,22 @@
-import { DestinationCard } from "../models/destination_card";
-
+// General
 export const SCALE = 1
-export const CITY_RADIUS = 5
-export const BOARD_WIDTH = 838
-export const BOARD_HEIGHT = 526
-export const PATH_PIECE_HEIGHT = 10
-export const PATH_PIECE_WIDTH = 28
+export const LINE_WIDTH = 1
+
+// City Constants
+export const CITY_RADIUS_S = 5*SCALE
+export const CITY_FONT = "normal 12px serif"
+export const CITY_COLOR = "black"
+
+// Board Constants
+export const BOARD_WIDTH_S = 838*SCALE
+export const BOARD_HEIGHT_S = 526*SCALE
+
+// Path Constants
+export const PATH_PIECE_HEIGHT_S = 10*SCALE
+export const PATH_PIECE_WIDTH_S = 28*SCALE
+export const PATH_PIECE_COLOR = 'black'
+export const PATH_EMPTY_COLOR = 'black'
+
 
 export const CITIES: any[] = [
     {
@@ -326,7 +337,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 31,
         "cityTwoId": 2,
-        "paths": [{"x":67,"y":99,"degrees":0},
+        "paths": [{"x":67,"y":99,"degrees":-1},
         {"x":100,"y":96,"degrees":-12},
         {"x":130,"y":82,"degrees":-39},
         {"x":152,"y":57,"degrees":-64}]
@@ -403,10 +414,10 @@ export let PATHS: any[] = [
         {"x":125,"y":446,"degrees":25},
         {"x":157,"y":457,"degrees":13},
         {"x":190,"y":462,"degrees":4},
-        {"x":224,"y":463,"degrees":0},
+        {"x":224,"y":463,"degrees":-1},
         {"x":258,"y":460,"degrees":-9}]
     },
-    // san francisco - salt lake city - 2    
+    // san francisco - salt lake city - 2
     {
         "cityOneId": 28,
         "cityTwoId": 27,
@@ -416,7 +427,7 @@ export let PATHS: any[] = [
         {"x":131,"y":264,"degrees":-15},
         {"x":163,"y":256,"degrees":-13}]
     },
-    // san francisco - salt lake city - 2   
+    // san francisco - salt lake city - 2
     {
         "cityOneId": 28,
         "cityTwoId": 27,
@@ -538,7 +549,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 9,
         "cityTwoId": 7,
-        "paths": [{"x":271,"y":153,"degrees":0},
+        "paths": [{"x":271,"y":153,"degrees":1},
         {"x":304,"y":153,"degrees":-1},
         {"x":337,"y":152,"degrees":-1},
         {"x":370,"y":151,"degrees":-2},
@@ -602,7 +613,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 6,
         "cityTwoId": 11,
-        "paths": [{"x":327,"y":289,"degrees":0},
+        "paths": [{"x":327,"y":289,"degrees":1},
         {"x":360,"y":288,"degrees":-4},
         {"x":392,"y":284,"degrees":-10},
         {"x":424,"y":277,"degrees":-14}]
@@ -611,7 +622,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 6,
         "cityTwoId": 11,
-        "paths": [{"x":326,"y":302,"degrees":0},
+        "paths": [{"x":326,"y":302,"degrees":1},
         {"x":359,"y":301,"degrees":-4},
         {"x":391,"y":297,"degrees":-10},
         {"x":423,"y":290,"degrees":-14}]
@@ -654,7 +665,7 @@ export let PATHS: any[] = [
         "cityOneId": 29,
         "cityTwoId": 20,
         "paths": [{"x":321,"y":369,"degrees":2},
-        {"x":357,"y":370,"degrees":0},
+        {"x":357,"y":370,"degrees":-1},
         {"x":393,"y":368,"degrees":-6}]
     },
     // el paso - houston
@@ -872,7 +883,7 @@ export let PATHS: any[] = [
         "paths": [{"x":474,"y":261,"degrees":4},
         {"x":506,"y":263,"degrees":3}]
     },
-    // raleigh - charleston    
+    // raleigh - charleston
     {
         "cityOneId": 25,
         "cityTwoId": 3,
@@ -1035,11 +1046,11 @@ export let PATHS: any[] = [
     {
         "cityOneId": 30,
         "cityTwoId": 16,
-        "paths": [{"x":587,"y":69,"degrees":135},
-        {"x":610,"y":45,"degrees":134},
-        {"x":638,"y":24,"degrees":150},
-        {"x":671,"y":14,"degrees":176},
-        {"x":705,"y":16,"degrees":191}]
+        "paths": [{"x":587,"y":69,"degrees":-45},
+        {"x":610,"y":45,"degrees":-46},
+        {"x":638,"y":24,"degrees":-30},
+        {"x":671,"y":14,"degrees":-4},
+        {"x":705,"y":16,"degrees":11}]
     },
     // duluth - toronto
     {
