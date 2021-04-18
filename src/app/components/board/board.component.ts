@@ -1,7 +1,7 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { BOARD_WIDTH, BOARD_HEIGHT, SCALE } from '../definitions/constants'
-import { BOARD_EVENT } from '../definitions/events';
-import { GameEngineService } from '../game-engine.service';
+import { BOARD_WIDTH, BOARD_HEIGHT, SCALE } from '../../resources/constants'
+import { BOARD_EVENT } from '../../resources/events';
+import { GameEngineService } from '../../services/game-engine.service';
 
 @Component({
   selector: 'app-board',

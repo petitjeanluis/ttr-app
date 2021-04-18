@@ -1,5 +1,5 @@
-import { PATH_PIECE_HEIGHT, PATH_PIECE_WIDTH, SCALE } from "../definitions/constants"
-import { Drawable } from "../definitions/drawable"
+import { PATH_PIECE_HEIGHT, PATH_PIECE_WIDTH, SCALE } from "../resources/constants"
+import { Drawable } from "../resources/drawable"
 
 export class PathPiece {
     x: number
@@ -34,28 +34,28 @@ export class PathPiece {
          * x' = x*cos(d) - y*sin(d)
          * y' = y*cos(d) + x*sin(d)
         */
-        
+
          tempX =  -PATH_PIECE_WIDTH*SCALE/2
          tempY =  -PATH_PIECE_HEIGHT*SCALE/2
          this.topLeftX = tempX*Math.cos((Math.PI/180)*this.degrees) - tempY*Math.sin((Math.PI/180)*this.degrees)
          this.topLeftY = tempY*Math.cos((Math.PI/180)*this.degrees) + tempX*Math.sin((Math.PI/180)*this.degrees)
          this.topLeftX = this.topLeftX + this.x*SCALE + PATH_PIECE_WIDTH*SCALE/2
          this.topLeftY = this.topLeftY + this.y*SCALE + PATH_PIECE_HEIGHT*SCALE/2
- 
+
          tempX = -PATH_PIECE_WIDTH*SCALE/2
          tempY = PATH_PIECE_HEIGHT*SCALE/2
          this.bottomLeftX = tempX*Math.cos((Math.PI/180)*this.degrees) - tempY*Math.sin((Math.PI/180)*this.degrees)
          this.bottomLeftY = tempY*Math.cos((Math.PI/180)*this.degrees) + tempX*Math.sin((Math.PI/180)*this.degrees)
          this.bottomLeftX = this.bottomLeftX + this.x*SCALE + PATH_PIECE_WIDTH*SCALE/2
          this.bottomLeftY = this.bottomLeftY + this.y*SCALE + PATH_PIECE_HEIGHT*SCALE/2
- 
+
          tempX = PATH_PIECE_WIDTH*SCALE/2
          tempY = -PATH_PIECE_HEIGHT*SCALE/2
          this.topRightX = tempX*Math.cos((Math.PI/180)*this.degrees) - tempY*Math.sin((Math.PI/180)*this.degrees)
          this.topRightY = tempY*Math.cos((Math.PI/180)*this.degrees) + tempX*Math.sin((Math.PI/180)*this.degrees)
          this.topRightX = this.topRightX + this.x*SCALE + PATH_PIECE_WIDTH*SCALE/2
          this.topRightY = this.topRightY + this.y*SCALE + PATH_PIECE_HEIGHT*SCALE/2
- 
+
          tempX = PATH_PIECE_WIDTH*SCALE/2
          tempY = PATH_PIECE_HEIGHT*SCALE/2
          this.bottomRightX = tempX*Math.cos((Math.PI/180)*this.degrees) - tempY*Math.sin((Math.PI/180)*this.degrees)
@@ -136,7 +136,7 @@ export class Path implements Drawable {
             true &&
             true
         ) {
-            
+
         }
         return false
     }

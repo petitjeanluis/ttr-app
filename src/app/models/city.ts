@@ -1,5 +1,5 @@
-import { Drawable } from "../definitions/drawable"
-import { SCALE } from "../definitions/constants"
+import { Drawable } from "../resources/drawable"
+import { SCALE } from "../resources/constants"
 
 export class City implements Drawable{
     x: number

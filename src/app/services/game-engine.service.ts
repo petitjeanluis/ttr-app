@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscriber } from 'rxjs';
-import { BoardComponent } from './board/board.component';
-import { City } from './models/city';
-import { DestinationCard } from './models/destination_card';
-import { Path, PathPiece } from './models/path';
-import { CITIES, DESTINATION_CARDS, PATHS } from './definitions/constants';
-import { BOARD_EVENT } from './definitions/events';
+import { BoardComponent } from '../components/board/board.component';
+import { City } from '../models/city';
+import { DestinationCard } from '../models/destination_card';
+import { Path, PathPiece } from '../models/path';
+import { CITIES, DESTINATION_CARDS, PATHS } from '../resources/constants';
+import { BOARD_EVENT } from '../resources/events';
 
 @Injectable({
   providedIn: 'root'

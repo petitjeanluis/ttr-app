@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BoardComponent } from './board/board.component';
-import { GameViewComponent } from './game-view/game-view.component';
-import { DestinationCardSelectionComponent } from './destination-card-selection/destination-card-selection.component';
-import { GameCardsComponent } from './game-cards/game-cards.component';
-import { PlayerInfoComponent } from './player-info/player-info.component';
+import { BoardComponent } from './components/board/board.component';
+import { GameViewComponent } from './components/game-view/game-view.component';
+import { DestinationCardSelectionComponent } from './components/destination-card-selection/destination-card-selection.component';
+import { GameCardsComponent } from './components/game-cards/game-cards.component';
+import { PlayerInfoComponent } from './components/player-info/player-info.component';
 
 @NgModule({
   declarations: [
