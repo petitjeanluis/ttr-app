@@ -1,5 +1,5 @@
 import { Drawable } from "../resources/drawable"
-import { PathPiece } from "./path_piece";
+import { PathPiece } from "./pathPiece";
 import {Point} from "./point";
 
 export class Path implements Drawable {

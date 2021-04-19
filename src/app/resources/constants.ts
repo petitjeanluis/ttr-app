@@ -1,23 +1,15 @@
 // General
+import {TrainCardType} from "./trainCardType";
+
 export const SCALE = 1
 export const LINE_WIDTH = 1
+export const SIDE_PANEL_WIDTH_S =210*SCALE
+export const SIDE_PANEL_HEIGHT_S = 526*SCALE
 
 // City Constants
 export const CITY_RADIUS_S = 5*SCALE
 export const CITY_FONT = "normal 12px serif"
 export const CITY_COLOR = "black"
-
-// Board Constants
-export const BOARD_WIDTH_S = 838*SCALE
-export const BOARD_HEIGHT_S = 526*SCALE
-
-// Path Constants
-export const PATH_PIECE_HEIGHT_S = 10*SCALE
-export const PATH_PIECE_WIDTH_S = 28*SCALE
-export const PATH_PIECE_COLOR = 'black'
-export const PATH_EMPTY_COLOR = 'black'
-
-
 export const CITIES: any[] = [
     {
         "x": 667,
@@ -272,7 +264,6 @@ export const CITIES: any[] = [
         "name": "Winnipeg"
     }
 ]
-
 export const ID_CITY_MAP = {
     0: "Atlanta",
     1: "Boston",
@@ -312,6 +303,64 @@ export const ID_CITY_MAP = {
     35: "Winnipeg"
 }
 
+// Board Constants
+export const BOARD_WIDTH_S = 838*SCALE
+export const BOARD_HEIGHT_S = 526*SCALE
+
+// Train Card constants
+export const TRAIN_CARD_WIDTH_S = 108*SCALE
+export const TRAIN_CARD_HEIGHT_S = 70*SCALE
+export const TOP_CARD_X_S = (SIDE_PANEL_WIDTH_S-TRAIN_CARD_WIDTH_S) / 2
+export const TOP_CARD_Y_S = 15*SCALE
+export const TOP_CARD_SPACE_S = 10*SCALE
+export const NUMBER_OF_TOP_CARDS = 5
+export const DESTINATION_CARD_SPACE_S = 20*SCALE
+export const DESITNATION_CARD_COLOR = "grey"
+export const DESITNATION_CARD_FONT = "normal 14px serif"
+export const DESITNATION_CARD_FONT_COLOR = "black"
+export const TRAIN_CARDS = [
+    {
+        "type": TrainCardType.BLACK,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.WHITE,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.RED,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.GREEN,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.BLUE,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.YELLOW,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.PURPLE,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.ORANGE,
+        "count": 12
+    },
+    {
+        "type": TrainCardType.WILD,
+        "count": 14
+    }
+]
+
+// Path Constants
+export const PATH_PIECE_HEIGHT_S = 10*SCALE
+export const PATH_PIECE_WIDTH_S = 28*SCALE
+export const PATH_EMPTY_COLOR = 'black'
 export let PATHS: any[] = [
     // vancouver - calgary
     {
@@ -859,7 +908,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 26,
         "cityTwoId": 17,
-        "paths": [{"x":549,"y":291,"degrees":27},
+        "paths": [{"x":549,"y":292,"degrees":24},
         {"x":581,"y":302,"degrees":13}]
     },
     // saint louis - little rock
@@ -925,7 +974,7 @@ export let PATHS: any[] = [
     {
         "cityOneId": 26,
         "cityTwoId": 23,
-        "paths": [{"x":551,"y":267,"degrees":-32},
+        "paths": [{"x":551,"y":266,"degrees":-32},
         {"x":578,"y":250,"degrees":-33},
         {"x":605,"y":233,"degrees":-33},
         {"x":632,"y":216,"degrees":-34},
@@ -1121,6 +1170,7 @@ export let PATHS: any[] = [
     }
 ]
 
+// Destination Card Constants
 export const DESTINATION_CARDS: any[] =[
     {
         "city1": 1,

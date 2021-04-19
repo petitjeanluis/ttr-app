@@ -1,4 +1,4 @@
-export const enum Color {
+export const enum PlayerColor {
     BLUE = "blue",
     GREEN = "green",
     YELLOW = "yellow",

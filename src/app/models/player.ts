@@ -1,6 +1,6 @@
-import { DestinationCard } from "./destination_card"
-import { TrainCard } from "./train_card"
-import { Color } from "../resources/color";
+import { DestinationCard } from "./destinationCard"
+import { TrainCard } from "./trainCard"
+import { PlayerColor } from "../resources/playerColor";
 
 export class Player {
     id: number
@@ -9,5 +9,5 @@ export class Player {
     pathScore: number
     destinationScore: number
     availableTrains: []
-    color: Color
+    color: PlayerColor
 }

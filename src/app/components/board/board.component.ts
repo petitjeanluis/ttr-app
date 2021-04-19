@@ -1,6 +1,5 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import {BOARD_WIDTH_S, BOARD_HEIGHT_S, LINE_WIDTH} from '../../resources/constants'
-import { BOARD_EVENT } from '../../resources/events';
 import { GameEngineService } from '../../services/game-engine.service';
 
 @Component({
@@ -26,7 +25,7 @@ export class BoardComponent implements  AfterViewInit{
 	}
 
 	mouseClick(event: MouseEvent) {
-		this.gameEngine.mouseClick(event)
+		this.gameEngine.boardClick(event)
 	}
 
 	drawBoard() {
@@ -51,7 +50,6 @@ export class BoardComponent implements  AfterViewInit{
     }
 
     public drawPaths() {
-	    console.log("drawing")
         this.gameEngine.paths.forEach(
           path => path.draw(this.ctx)
         )
