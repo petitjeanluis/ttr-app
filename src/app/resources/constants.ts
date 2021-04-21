@@ -1,15 +1,16 @@
 // General
-import {TrainCardType} from "./trainCardType";
+import {TrainCardType} from "../models/train-card-type";
 
 export const SCALE = 1
 export const LINE_WIDTH = 1
-export const SIDE_PANEL_WIDTH_S =210*SCALE
-export const SIDE_PANEL_HEIGHT_S = 526*SCALE
+export const SIDE_PANEL_WIDTH =210
+export const SIDE_PANEL_HEIGHT = 526
 
 // City Constants
-export const CITY_RADIUS_S = 5*SCALE
+export const CITY_RADIUS = 5
 export const CITY_FONT = "normal 12px serif"
 export const CITY_COLOR = "black"
+export const CITY_LINE_WIDTH = 1
 export const CITIES: any[] = [
     {
         "x": 667,
@@ -304,20 +305,20 @@ export const ID_CITY_MAP = {
 }
 
 // Board Constants
-export const BOARD_WIDTH_S = 838*SCALE
-export const BOARD_HEIGHT_S = 526*SCALE
+export const BOARD_WIDTH = 838
+export const BOARD_HEIGHT = 526
 
 // Train Card constants
-export const TRAIN_CARD_WIDTH_S = 108*SCALE
-export const TRAIN_CARD_HEIGHT_S = 70*SCALE
-export const TOP_CARD_X_S = (SIDE_PANEL_WIDTH_S-TRAIN_CARD_WIDTH_S) / 2
-export const TOP_CARD_Y_S = 15*SCALE
-export const TOP_CARD_SPACE_S = 10*SCALE
+export const TRAIN_CARD_WIDTH = 108
+export const TRAIN_CARD_HEIGHT = 70
+export const TRAIN_CARD_X = (SIDE_PANEL_WIDTH-TRAIN_CARD_WIDTH) / 2
+export const TRAIN_CARD_Y = 15
+export const TRAIN_CARD_SPACE = 10
 export const NUMBER_OF_TOP_CARDS = 5
-export const DESTINATION_CARD_SPACE_S = 20*SCALE
-export const DESITNATION_CARD_COLOR = "grey"
-export const DESITNATION_CARD_FONT = "normal 14px serif"
-export const DESITNATION_CARD_FONT_COLOR = "black"
+export const DESTINATION_CARD_SPACE = 20
+export const DESTINATION_CARD_COLOR = "grey"
+export const DESTINATION_CARD_FONT = "normal 14px serif"
+export const DESTINATION_CARD_FONT_COLOR = "black"
 export const TRAIN_CARDS = [
     {
         "type": TrainCardType.BLACK,
@@ -358,8 +359,8 @@ export const TRAIN_CARDS = [
 ]
 
 // Path Constants
-export const PATH_PIECE_HEIGHT_S = 10*SCALE
-export const PATH_PIECE_WIDTH_S = 28*SCALE
+export const PATH_PIECE_HEIGHT = 10
+export const PATH_PIECE_WIDTH = 28
 export const PATH_EMPTY_COLOR = 'black'
 export let PATHS: any[] = [
     // vancouver - calgary

@@ -1,23 +1,17 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {GameEngineService} from "../../services/game-engine.service";
 import {
-    BOARD_HEIGHT_S,
-    BOARD_WIDTH_S,
-    DESITNATION_CARD_COLOR,
-    DESITNATION_CARD_FONT,
-    DESITNATION_CARD_FONT_COLOR,
-    DESTINATION_CARD_SPACE_S,
+    DESTINATION_CARD_COLOR,
+    DESTINATION_CARD_FONT,
+    DESTINATION_CARD_FONT_COLOR,
+    DESTINATION_CARD_SPACE,
     NUMBER_OF_TOP_CARDS, SCALE,
-    SIDE_PANEL_HEIGHT_S,
-    SIDE_PANEL_WIDTH_S,
-    TOP_CARD_SPACE_S,
-    TOP_CARD_X_S,
-    TOP_CARD_Y_S,
-    TRAIN_CARD_HEIGHT_S,
-    TRAIN_CARD_WIDTH_S
+    SIDE_PANEL_HEIGHT,
+    SIDE_PANEL_WIDTH,
+    TRAIN_CARD_HEIGHT,
+    TRAIN_CARD_WIDTH
 } from "../../resources/constants";
-import {TrainCard} from "../../models/trainCard";
-import {TopTrainCard} from "../../models/topTrainCard";
+
 
 @Component({
   selector: 'app-game-cards',
@@ -30,44 +24,33 @@ export class GameCardsComponent implements AfterViewInit {
     canvas: ElementRef<HTMLCanvasElement>;
     ctx: CanvasRenderingContext2D;
 
-    topCards: TopTrainCard[]
-
     constructor(private gameEngine: GameEngineService) { }
 
     ngAfterViewInit(): void {
         this.ctx = this.canvas.nativeElement.getContext('2d')
-        this.ctx.canvas.width = SIDE_PANEL_WIDTH_S
-        this.ctx.canvas.height = SIDE_PANEL_HEIGHT_S
+        this.ctx.canvas.width = SIDE_PANEL_WIDTH
+        this.ctx.canvas.height = SIDE_PANEL_HEIGHT
+        this.gameEngine.registerGameCardsComponent(this)
+        this.drawComponent()
+    }
+
+    drawComponent() {
+        this.drawFrame()
+        this.drawTrainCards()
+    }
+
+    private drawFrame() {
         this.ctx.fillStyle = "#E1C699"
         this.ctx.fillRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
-        this.gameEngine.registerGameCardsComponent(this)
-        this.topCards = this.gameEngine.getTopCards()
-        this.drawCards()
     }
+
+    private drawTrainCards() {
+        this.gameEngine.faceUpTrainCards.draw(this.ctx)
+    }
+
 
     mouseClick(event: MouseEvent) {
-
-    }
-
-    drawCards() {
-        this.drawTrainCards()
-        this.drawDestinationCard()
-    }
-
-    drawTrainCards() {
-        for (let i = 0; i < this.topCards.length; i++) {
-            this.topCards[i].draw(this.ctx)
-        }
-    }
-
-    drawDestinationCard() {
-        this.ctx.save()
-        this.ctx.fillStyle = DESITNATION_CARD_COLOR
-        let y = TOP_CARD_Y_S+(TOP_CARD_SPACE_S+TRAIN_CARD_HEIGHT_S)*NUMBER_OF_TOP_CARDS+DESTINATION_CARD_SPACE_S
-        this.ctx.fillRect(TOP_CARD_X_S,y,TRAIN_CARD_WIDTH_S,TRAIN_CARD_HEIGHT_S)
-        this.ctx.fillStyle = DESITNATION_CARD_FONT_COLOR
-        this.ctx.font = DESITNATION_CARD_FONT
-        this.ctx.fillText("Destination Card",TOP_CARD_X_S+5*SCALE,y+TRAIN_CARD_HEIGHT_S/1.8)
+        this.gameEngine.gameCardClick(event)
     }
 
 }

@@ -1,7 +1,8 @@
-import { Drawable } from "../resources/drawable"
-import {CITY_COLOR, CITY_FONT, CITY_RADIUS_S, LINE_WIDTH, SCALE} from "../resources/constants"
+import { Drawable } from "../models/drawable"
+import {CITY_COLOR, CITY_FONT, CITY_RADIUS, CITY_LINE_WIDTH} from "../resources/constants"
+import {StaticEntity} from "../models/static-entity";
 
-export class City implements Drawable{
+export class City implements StaticEntity{
     x: number
     y: number
     labelX: number
@@ -9,10 +10,10 @@ export class City implements Drawable{
     name: string
 
     constructor(x: number, y: number, labelX: number, labelY: number, name: string) {
-        this.x = x*SCALE
-        this.y = y*SCALE
-        this.labelX = labelX*SCALE
-        this.labelY = labelY*SCALE
+        this.x = x
+        this.y = y
+        this.labelX = labelX
+        this.labelY = labelY
         this.name = name
     }
 
@@ -20,9 +21,9 @@ export class City implements Drawable{
         ctx.save()
         ctx.font = CITY_FONT
         ctx.fillStyle = CITY_COLOR
-        ctx.lineWidth = LINE_WIDTH
+        ctx.lineWidth = CITY_LINE_WIDTH
         ctx.beginPath()
-        ctx.arc(this.x,this.y,CITY_RADIUS_S, 0,2*Math.PI)
+        ctx.arc(this.x,this.y,CITY_RADIUS, 0,2*Math.PI)
         ctx.fillText(this.name,this.labelX,this.labelY)
         ctx.stroke()
         ctx.restore()

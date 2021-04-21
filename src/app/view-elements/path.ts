@@ -1,8 +1,9 @@
-import { Drawable } from "../resources/drawable"
-import { PathPiece } from "./pathPiece";
-import {Point} from "./point";
+import { Drawable } from "../models/drawable"
+import { PathPiece } from "./path-piece";
+import {Point} from "../models/point";
+import {DynamicEntity} from "../models/dynamic-entity";
 
-export class Path implements Drawable {
+export class Path implements DynamicEntity {
 
     playerId: number
     cityOneId: number
@@ -28,9 +29,9 @@ export class Path implements Drawable {
         this.pathPieces.forEach(p => p.color = color)
     }
 
-    public isInPath(point: Point): boolean {
+    isTouched(point: Point): boolean {
         for (let i = 0; i < this.pathPieces.length; i++) {
-            if (this.pathPieces[i].isInPathPiece(point)) {
+            if (this.pathPieces[i].isTouched(point)) {
                 return true
             }
         }

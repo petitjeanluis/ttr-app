@@ -1,5 +1,5 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import {BOARD_WIDTH_S, BOARD_HEIGHT_S, LINE_WIDTH} from '../../resources/constants'
+import {BOARD_WIDTH, BOARD_HEIGHT, LINE_WIDTH} from '../../resources/constants'
 import { GameEngineService } from '../../services/game-engine.service';
 
 @Component({
@@ -18,24 +18,24 @@ export class BoardComponent implements  AfterViewInit{
 
 	ngAfterViewInit(): void {
 		this.ctx = this.canvas.nativeElement.getContext('2d')
-        this.ctx.canvas.width = BOARD_WIDTH_S
-        this.ctx.canvas.height = BOARD_HEIGHT_S
+        this.ctx.canvas.width = BOARD_WIDTH
+        this.ctx.canvas.height = BOARD_HEIGHT
 		this.gameEngine.registerBoardComponent(this)
-		this.drawBoard()
+		this.drawComponent()
 	}
 
 	mouseClick(event: MouseEvent) {
 		this.gameEngine.boardClick(event)
 	}
 
-	drawBoard() {
+	drawComponent() {
         this.drawFrame()
         this.drawCities()
         this.drawPaths()
 	}
 
-	drawFrame() {
-        this.ctx.fillStyle = 'white'
+	private drawFrame() {
+        this.ctx.fillStyle = "#FFE2B3"
         this.ctx.fillRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
 
         this.ctx.strokeStyle = 'black'
@@ -43,13 +43,13 @@ export class BoardComponent implements  AfterViewInit{
         this.ctx.strokeRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
       }
 
-    drawCities() {
+    private drawCities() {
         this.gameEngine.cities.forEach(
           city => city.draw(this.ctx)
         )
     }
 
-    public drawPaths() {
+    private drawPaths() {
         this.gameEngine.paths.forEach(
           path => path.draw(this.ctx)
         )

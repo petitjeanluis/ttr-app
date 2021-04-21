@@ -8,5 +8,4 @@ export enum TrainCardType {
     PURPLE = "purple",
     ORANGE = "orange",
     WILD = "wild"
-
 }

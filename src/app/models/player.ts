@@ -1,6 +1,6 @@
-import { DestinationCard } from "./destinationCard"
-import { TrainCard } from "./trainCard"
-import { PlayerColor } from "../resources/playerColor";
+import { DestinationCard } from "./destination-card"
+import { TrainCard } from "./train-card"
+import { PlayerColor } from "./player-color";
 
 export class Player {
     id: number

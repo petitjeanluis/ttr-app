@@ -1,36 +1,52 @@
 import { Injectable } from '@angular/core';
-import { City } from '../models/city';
-import { DestinationCard } from '../models/destinationCard';
-import { Path } from '../models/path';
-import { PathPiece } from "../models/pathPiece";
-import {CITIES, DESTINATION_CARDS, NUMBER_OF_TOP_CARDS, PATHS, TRAIN_CARDS} from '../resources/constants';
+import { City } from '../view-elements/city';
+import { DestinationCard } from '../models/destination-card';
+import { Path } from '../view-elements/path';
+import { PathPiece } from "../view-elements/path-piece";
+import {
+    CITIES,
+    DESTINATION_CARDS,
+    NUMBER_OF_TOP_CARDS,
+    PATHS, TRAIN_CARD_HEIGHT, TRAIN_CARD_SPACE,
+    TRAIN_CARD_X,
+    TRAIN_CARD_Y,
+    TRAIN_CARDS
+} from '../resources/constants';
 import {Point} from "../models/point";
 import {BoardComponent} from "../components/board/board.component";
 import {GameCardsComponent} from "../components/game-cards/game-cards.component";
-import {TrainCard} from "../models/trainCard";
 import {Utils} from "../resources/utils";
-import {TopTrainCard} from "../models/topTrainCard";
+import {TrainCard} from "../view-elements/train-card";
+import {TrainCardOrderedSet} from "../models/train-card-ordered-set";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameEngineService {
 
-	ready: Boolean = false
 	public cities: City[] = []
 	public paths: Path[] = []
 	public destinationCards: DestinationCard[] = []
     public trainCards: TrainCard[] = []
-    public topTrainCards: TopTrainCard[] = []
+    public faceUpTrainCards: TrainCardOrderedSet
+
+    // game-card-view
+        // stockPileTrainCard
+        // trainCardSetSelector: list
+        // stockPileDestinationCard
+    // game-status view
+        // playerCard : list
+        // gameInfoCard
+    // player-info view
+        // trainCard: list
+        // destinationCard: list
+        // playerCard
+
 
     public boardComponent: BoardComponent
     public gameCardsComponent: GameCardsComponent
 
 	constructor() {
-        this.initializeBoard()
-	}
-
-	private initializeBoard() {
         CITIES.forEach(
           city => {
             this.cities.push(new City(city['x'],city['y'],city['labelX'],city['labelY'],city['name']))
@@ -53,14 +69,20 @@ export class GameEngineService {
         TRAIN_CARDS.forEach(
             trainCard => {
                 for (let i = 0; i < trainCard.count; i++) {
-                    this.trainCards.push(new TrainCard(trainCard.type))
+                    this.trainCards.push(
+                        new TrainCard(
+                            trainCard.type,
+                            new Point(0,0)))
                 }
             }
         )
         Utils.shuffleArray(this.trainCards)
+
+        let topFiveCards = []
         for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
-            this.topTrainCards.push(new TopTrainCard(this.trainCards.shift(),i))
+            topFiveCards.push(this.trainCards.shift())
         }
+        this.faceUpTrainCards = new TrainCardOrderedSet(NUMBER_OF_TOP_CARDS,topFiveCards)
     }
 
 	public registerBoardComponent(boardComponent: BoardComponent) {
@@ -69,9 +91,9 @@ export class GameEngineService {
 
 	public boardClick(event: MouseEvent) {
         for (let i = 0; i < this.paths.length; i++) {
-            if (this.paths[i].isInPath(new Point(event.offsetX,event.offsetY))) {
+            if (this.paths[i].isTouched(new Point(event.offsetX,event.offsetY))) {
                 this.paths[i].setColor("green")
-                this.boardComponent.drawBoard()
+                this.boardComponent.drawComponent()
                 return
             }
         }
@@ -81,8 +103,20 @@ export class GameEngineService {
 	    this.gameCardsComponent = gameCardsComponent
     }
 
-    public getTopCards() {
-        return this.topTrainCards
+    public gameCardClick(event: MouseEvent) {
+	    let selectedCard = this.faceUpTrainCards.findCard(new Point(event.offsetX,event.offsetY))
+        if (selectedCard) {
+            let newCard = this.trainCards.shift()
+            this.faceUpTrainCards.removeAndAdd(selectedCard,newCard)
+            this.gameCardsComponent.drawComponent()
+        }
+        /*
+        * TODO
+        * Give card to player
+        * Reshuffle if three wildcards are present
+        *
+        * */
+
     }
 
 }

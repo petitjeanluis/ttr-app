@@ -1,15 +1,15 @@
 import {
     LINE_WIDTH,
     PATH_EMPTY_COLOR,
-    PATH_PIECE_HEIGHT_S,
-    PATH_PIECE_WIDTH_S,
-    SCALE
+    PATH_PIECE_HEIGHT,
+    PATH_PIECE_WIDTH
 } from "../resources/constants";
-import {Drawable} from "../resources/drawable";
-import {Point} from "./point";
-import {Line} from "./line";
+import {Drawable} from "../models/drawable";
+import {Point} from "../models/point";
+import {Line} from "../models/line";
+import {DynamicEntity} from "../models/dynamic-entity";
 
-export class PathPiece implements  Drawable {
+export class PathPiece implements  DynamicEntity {
 
     // top left corner
     x: number
@@ -31,29 +31,29 @@ export class PathPiece implements  Drawable {
 
 
     constructor(x:number, y:number, degrees: number) {
-        this.x = x*SCALE
-        this.y = y*SCALE
-        this.width = PATH_PIECE_WIDTH_S
-        this.height = PATH_PIECE_HEIGHT_S
+        this.x = x
+        this.y = y
+        this.width = PATH_PIECE_WIDTH
+        this.height = PATH_PIECE_HEIGHT
         this.degrees = degrees
         this.color = PATH_EMPTY_COLOR
 
-        let shiftX = this.x + PATH_PIECE_WIDTH_S/2
-        let shiftY = this.y + PATH_PIECE_HEIGHT_S/2
+        let shiftX = this.x + PATH_PIECE_WIDTH/2
+        let shiftY = this.y + PATH_PIECE_HEIGHT/2
 
-        this.topLeftPoint = new Point(-PATH_PIECE_WIDTH_S/2,-PATH_PIECE_HEIGHT_S/2)
+        this.topLeftPoint = new Point(-PATH_PIECE_WIDTH/2,-PATH_PIECE_HEIGHT/2)
         this.topLeftPoint.rotatePoint(this.degrees)
         this.topLeftPoint.translatePoint(shiftX,shiftY)
 
-        this.topRightPoint = new Point(PATH_PIECE_WIDTH_S/2,-PATH_PIECE_HEIGHT_S/2)
+        this.topRightPoint = new Point(PATH_PIECE_WIDTH/2,-PATH_PIECE_HEIGHT/2)
         this.topRightPoint.rotatePoint(this.degrees)
         this.topRightPoint.translatePoint(shiftX,shiftY)
 
-        this.bottomLeftPoint = new Point(-PATH_PIECE_WIDTH_S/2,PATH_PIECE_HEIGHT_S/2)
+        this.bottomLeftPoint = new Point(-PATH_PIECE_WIDTH/2,PATH_PIECE_HEIGHT/2)
         this.bottomLeftPoint.rotatePoint(this.degrees)
         this.bottomLeftPoint.translatePoint(shiftX,shiftY)
 
-        this.bottomRightPoint = new Point(PATH_PIECE_WIDTH_S/2,PATH_PIECE_HEIGHT_S/2)
+        this.bottomRightPoint = new Point(PATH_PIECE_WIDTH/2,PATH_PIECE_HEIGHT/2)
         this.bottomRightPoint.rotatePoint(this.degrees)
         this.bottomRightPoint.translatePoint(shiftX,shiftY)
 
@@ -74,8 +74,7 @@ export class PathPiece implements  Drawable {
         ctx.restore()
     }
 
-    public isInPathPiece(point: Point): boolean {
-        // check based on rectangle rotation
+    isTouched(point: Point): boolean {
         if (this.degrees > 90) {
             return (this.topLine.isPointAboveLine(point) &&
                 this.rightLine.isPointAboveLine(point) &&
