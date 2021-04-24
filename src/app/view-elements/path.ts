@@ -4,13 +4,14 @@ import {Point} from "../models/point";
 import {DynamicEntity} from "../models/dynamic-entity";
 
 export class Path implements DynamicEntity {
-
+    id: number
     playerId: number
     cityOneId: number
     cityTwoId: number
     pathPieces: PathPiece[]
 
-    constructor(cityOneId: number, cityTwoId: number, pathPieces: PathPiece[], playerId?: number) {
+    constructor(id: number, cityOneId: number, cityTwoId: number, pathPieces: PathPiece[], playerId?: number) {
+        this.id = id
         this.cityOneId = cityOneId
         this.cityTwoId = cityTwoId
         this.pathPieces = pathPieces

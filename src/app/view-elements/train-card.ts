@@ -3,7 +3,7 @@ import {Point} from "../models/point";
 import {TrainCardType} from "../models/train-card-type";
 import {TRAIN_CARD_HEIGHT, TRAIN_CARD_WIDTH} from "../resources/constants";
 
-export class TrainCard implements DynamicEntity{
+export class TrainCard implements DynamicEntity {
 
     private static idCounter = 0
     trainCardType: TrainCardType
@@ -12,9 +12,9 @@ export class TrainCard implements DynamicEntity{
     color: string
     id: number
 
-    constructor(trainCardType: TrainCardType, topLeftPoint: Point) {
+    constructor(trainCardType: TrainCardType) {
         this.trainCardType = trainCardType
-        this.topLeftPoint = topLeftPoint
+        this.topLeftPoint = new Point(0,0)
         if (trainCardType === TrainCardType.WILD) {
             this.isWild = true
         } else {
@@ -49,23 +49,22 @@ export class TrainCard implements DynamicEntity{
         }
     }
 
-    drawRegular(ctx: CanvasRenderingContext2D) {
+    private drawRegular(ctx: CanvasRenderingContext2D) {
         ctx.save()
         ctx.fillStyle = this.color
         ctx.fillRect(this.topLeftPoint.x,this.topLeftPoint.y,TRAIN_CARD_WIDTH,TRAIN_CARD_HEIGHT)
         ctx.restore()
     }
 
-    drawWild(ctx: CanvasRenderingContext2D) {
+    private drawWild(ctx: CanvasRenderingContext2D) {
         ctx.save()
         const widthPiece = TRAIN_CARD_WIDTH/8
-        let trainCardType: TrainCardType
         let x = this.topLeftPoint.x
         for (let trainCardType in TrainCardType){
-            if (trainCardType == "WILD") {
+            if (TrainCardType[trainCardType] == "wild") {
                 continue
             }
-            ctx.fillStyle = trainCardType
+            ctx.fillStyle = TrainCardType[trainCardType]
             ctx.fillRect(x,this.topLeftPoint.y,widthPiece,TRAIN_CARD_HEIGHT)
             x += widthPiece
         }
