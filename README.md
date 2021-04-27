@@ -4,10 +4,5 @@ Online version of the Ticket to Ride Game
 
 # Game Modes
 
-* Local Mode
-    * 1-5 players
-* Online -> 1-5
-    * 1-5 Players*
-    * Create Room
-        * Room Name
-    * Pr
+* Local Mode - Allows you to play game locally with 1-5 players
+* Online Mode - Alllows you to play the game with 1-4 other players, either by creating a game room or joining one.
