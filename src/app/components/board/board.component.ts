@@ -1,10 +1,10 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import {BOARD_WIDTH, BOARD_HEIGHT, LINE_WIDTH, CITIES, PATHS, BOARD_COLOR} from '../../resources/constants'
 import { GameEngineService } from '../../services/game-engine.service';
-import {City} from "../../view-elements/city";
-import {Path} from "../../view-elements/path";
-import {PathPiece} from "../../view-elements/path-piece";
+import {City} from "../../entities/city";
+import {Path} from "../../entities/path";
+import {PathPiece} from "../../entities/path-piece";
 import {Point} from "../../models/point";
+import {BOARD_COLOR, BOARD_HEIGHT, BOARD_LINE_WIDTH, BOARD_WIDTH, CITIES, PATHS} from "../../resources/board-constants";
 
 @Component({
   selector: 'app-board',
@@ -29,14 +29,14 @@ export class BoardComponent implements  AfterViewInit {
         this.ctx.canvas.height = BOARD_HEIGHT
         CITIES.forEach(
             city => {
-                this.cities.push(new City(city['x'],city['y'],city['labelX'],city['labelY'],city['name']))
+                this.cities.push(new City(new Point(city['x'],city['y']),city['labelX'],city['labelY'],city['name']))
             }
         )
         PATHS.forEach(
             path => {
                 let pathPieces: PathPiece[] = []
                 path['paths'].forEach(pathPiece => {
-                    pathPieces.push(new PathPiece(pathPiece['x'], pathPiece['y'], pathPiece['degrees']))
+                    pathPieces.push(new PathPiece(new Point(pathPiece['x'], pathPiece['y']), pathPiece['degrees']))
                 });
                 this.paths.push(new Path(path['id'],path['cityOneId'],path['cityTwoId'],pathPieces))
             }
@@ -61,7 +61,7 @@ export class BoardComponent implements  AfterViewInit {
         this.ctx.fillRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
 
         this.ctx.strokeStyle = 'black'
-        this.ctx.lineWidth = LINE_WIDTH
+        this.ctx.lineWidth = BOARD_LINE_WIDTH
         this.ctx.strokeRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
 
         this.cities.forEach(

@@ -1,9 +1,8 @@
 import { Drawable } from "../models/drawable"
 import { PathPiece } from "./path-piece";
 import {Point} from "../models/point";
-import {DynamicEntity} from "../models/dynamic-entity";
 
-export class Path implements DynamicEntity {
+export class Path implements Drawable{
     id: number
     playerId: number
     cityOneId: number

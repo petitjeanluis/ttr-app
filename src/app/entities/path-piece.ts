@@ -1,19 +1,15 @@
-import {
-    LINE_WIDTH,
-    PATH_EMPTY_COLOR,
-    PATH_PIECE_HEIGHT,
-    PATH_PIECE_WIDTH
-} from "../resources/constants";
-import {Drawable} from "../models/drawable";
 import {Point} from "../models/point";
 import {Line} from "../models/line";
-import {DynamicEntity} from "../models/dynamic-entity";
+import {InteractiveEntity} from "../models/interactive-entity";
+import {
+    PATH_EMPTY_COLOR,
+    PATH_PIECE_HEIGHT,
+    PATH_PIECE_LINE_WIDTH,
+    PATH_PIECE_WIDTH
+} from "../resources/board-constants";
 
-export class PathPiece implements  DynamicEntity {
+export class PathPiece extends  InteractiveEntity {
 
-    // top left corner
-    x: number
-    y: number
     width: number
     height: number
     degrees: number
@@ -30,16 +26,15 @@ export class PathPiece implements  DynamicEntity {
     leftLine: Line
 
 
-    constructor(x:number, y:number, degrees: number) {
-        this.x = x
-        this.y = y
+    constructor(location: Point, degrees: number) {
+        super(location)
         this.width = PATH_PIECE_WIDTH
         this.height = PATH_PIECE_HEIGHT
-        this.degrees = degrees
         this.color = PATH_EMPTY_COLOR
+        this.degrees = degrees
 
-        let shiftX = this.x + PATH_PIECE_WIDTH/2
-        let shiftY = this.y + PATH_PIECE_HEIGHT/2
+        let shiftX = this.location.x + PATH_PIECE_WIDTH/2
+        let shiftY = this.location.y + PATH_PIECE_HEIGHT/2
 
         this.topLeftPoint = new Point(-PATH_PIECE_WIDTH/2,-PATH_PIECE_HEIGHT/2)
         this.topLeftPoint.rotatePoint(this.degrees)
@@ -67,8 +62,8 @@ export class PathPiece implements  DynamicEntity {
     public draw(ctx: CanvasRenderingContext2D) {
         ctx.save()
         ctx.strokeStyle = this.color
-        ctx.lineWidth = LINE_WIDTH
-        ctx.translate(this.x+this.width/2, this.y+this.height/2)
+        ctx.lineWidth = PATH_PIECE_LINE_WIDTH
+        ctx.translate(this.location.x+this.width/2, this.location.y+this.height/2)
         ctx.rotate((Math.PI/180)*this.degrees)
         ctx.strokeRect(-this.width/2,-this.height/2,this.width,this.height)
         ctx.restore()

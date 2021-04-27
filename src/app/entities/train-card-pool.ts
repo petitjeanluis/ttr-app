@@ -1,9 +1,14 @@
 import {TrainCard} from "./train-card";
-import {Drawable} from "../models/drawable";
-import {TRAIN_CARD_HEIGHT, TRAIN_CARD_Y_SPACING, TRAIN_CARD_X, TRAIN_CARD_Y} from "../resources/constants";
 import {Point} from "../models/point";
+import {InteractiveEntityContainer} from "../models/interactive-entity-container";
+import {
+    TRAIN_CARD_HEIGHT,
+    TRAIN_CARD_SPACING,
+    TRAIN_CARD_X,
+    TRAIN_CARD_Y
+} from "../resources/game-cards-constants";
 
-export class OrderedTrainCardPool implements Drawable{
+export class TrainCardPool implements InteractiveEntityContainer {
 
     private trainCardMap: Map<number,TrainCard>
 
@@ -15,8 +20,8 @@ export class OrderedTrainCardPool implements Drawable{
         this.trainCardMap = new Map<number,TrainCard>()
 
         for (let i = 0; i < trainCards.length; i++) {
-            trainCards[i].topLeftPoint.x = TRAIN_CARD_X
-            trainCards[i].topLeftPoint.y = TRAIN_CARD_Y+(TRAIN_CARD_HEIGHT+TRAIN_CARD_Y_SPACING)*i
+            trainCards[i].getLocation().x = TRAIN_CARD_X
+            trainCards[i].getLocation().y = TRAIN_CARD_Y+(TRAIN_CARD_HEIGHT+TRAIN_CARD_SPACING)*i
             this.trainCardMap.set(i,trainCards[i])
         }
     }
@@ -27,7 +32,7 @@ export class OrderedTrainCardPool implements Drawable{
         }
     }
 
-    trainCardTouched(point: Point) {
+    entityTouched(point: Point) {
         for (let [key,trainCard] of this.trainCardMap) {
             if(trainCard.isTouched(point)) {
                 return key
@@ -43,8 +48,8 @@ export class OrderedTrainCardPool implements Drawable{
 
         let oldCard: TrainCard =  this.trainCardMap.get(trainCardKey)
 
-        newTrainCard.topLeftPoint.x = TRAIN_CARD_X
-        newTrainCard.topLeftPoint.y = TRAIN_CARD_Y+(TRAIN_CARD_HEIGHT+TRAIN_CARD_Y_SPACING)*trainCardKey
+        newTrainCard.getLocation().x = TRAIN_CARD_X
+        newTrainCard.getLocation().y = TRAIN_CARD_Y+(TRAIN_CARD_HEIGHT+TRAIN_CARD_SPACING)*trainCardKey
         this.trainCardMap.set(trainCardKey, newTrainCard)
 
         return oldCard

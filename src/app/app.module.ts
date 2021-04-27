@@ -8,7 +8,6 @@ import { GameViewComponent } from './components/game-view/game-view.component';
 import { DestinationCardSelectionComponent } from './components/destination-card-selection/destination-card-selection.component';
 import { GameCardsComponent } from './components/game-cards/game-cards.component';
 import { PlayerInfoComponent } from './components/player-info/player-info.component';
-import { GameStatusComponent } from './components/game-status/game-status.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +16,7 @@ import { GameStatusComponent } from './components/game-status/game-status.compon
     GameViewComponent,
     DestinationCardSelectionComponent,
     GameCardsComponent,
-    PlayerInfoComponent,
-    GameStatusComponent
+    PlayerInfoComponent
   ],
   imports: [
     BrowserModule,

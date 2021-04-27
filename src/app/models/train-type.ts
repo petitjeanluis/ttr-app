@@ -1,4 +1,4 @@
-export enum TrainCardType {
+export enum TrainType {
     BLACK = "#464555",
     WHITE = "#E6F4F1",
     RED = "#BF4B53",

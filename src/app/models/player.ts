@@ -1,13 +1,13 @@
-import { DestinationCard } from "./destination-card"
-import { TrainCard } from "./train-card"
+import { Destination } from "./destination"
 import { PlayerColor } from "./player-color";
+import {TrainCard} from "../entities/train-card";
 
 export class Player {
     id: number
-    destinationCards: DestinationCard[]
-    trainsCards: TrainCard[]
-    pathScore: number
-    destinationScore: number
-    availableTrains: []
+    name: string
     color: PlayerColor
+    trainsCards: TrainCard[]
+    destinationCards: Destination[]
+    availableTrains: number
+    score?: number
 }

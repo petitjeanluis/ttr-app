@@ -1,23 +1,14 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {GameEngineService} from "../../services/game-engine.service";
-import {
-    PILE_CARD_FONT,
-    PILE_CARD_FONT_COLOR,
-    DESTINATION_CARDS,
-    NUMBER_OF_TOP_CARDS, SCALE,
-    SIDE_PANEL_HEIGHT,
-    SIDE_PANEL_WIDTH,
-    TRAIN_CARD_HEIGHT,
-    TRAIN_CARD_WIDTH, TRAIN_CARDS,
-    BACKGROUND_COLOR
-} from "../../resources/constants";
-import {TrainCard} from "../../view-elements/train-card";
+import {TrainCard} from "../../entities/train-card";
 import {Point} from "../../models/point";
 import {Utils} from "../../resources/utils";
-import {DestinationCard} from "../../models/destination-card";
-import { OrderedTrainCardPool} from "../../view-elements/ordered-train-card-pool";
-import {TrainCardPile} from "../../view-elements/train-card-pile";
-import {DestinationCardPile} from "../../view-elements/destination-card-pile";
+import {Destination} from "../../models/destination";
+import { TrainCardPool} from "../../entities/train-card-pool";
+import {TrainCardPile} from "../../entities/train-card-pile";
+import {DestinationCardPile} from "../../entities/destination-card-pile";
+import {SIDE_PANEL_HEIGHT,SIDE_PANEL_WIDTH,SIDE_PANEL_BACKGROUND_COLOR} from "../../resources/constants";
+import {DESTINATION_CARDS,TRAIN_CARDS,NUMBER_OF_TOP_CARDS} from "../../resources/game-cards-constants";
 
 
 @Component({
@@ -31,9 +22,9 @@ export class GameCardsComponent implements AfterViewInit {
     canvas: ElementRef<HTMLCanvasElement>;
     ctx: CanvasRenderingContext2D;
 
-    private destinationCards: DestinationCard[] = []
+    private destinationCards: Destination[] = []
     private trainCards: TrainCard[] = []
-    private availableCards: OrderedTrainCardPool
+    private availableCards: TrainCardPool
     private trainCardPile: TrainCardPile = new TrainCardPile()
     private destinationCardPile: DestinationCardPile = new DestinationCardPile()
 
@@ -53,7 +44,7 @@ export class GameCardsComponent implements AfterViewInit {
             trainCard => {
                 for (let i = 0; i < trainCard.count; i++) {
                     this.trainCards.push(
-                        new TrainCard(trainCard.type,))
+                        new TrainCard(new Point(0,0),trainCard.type,))
                 }
             }
         )
@@ -63,14 +54,14 @@ export class GameCardsComponent implements AfterViewInit {
         for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
             topFiveCards.push(this.trainCards.shift())
         }
-        this.availableCards = new OrderedTrainCardPool(NUMBER_OF_TOP_CARDS,topFiveCards)
+        this.availableCards = new TrainCardPool(NUMBER_OF_TOP_CARDS,topFiveCards)
 
         this.gameEngine.registerGameCardsComponent(this)
         this.drawComponent()
     }
 
     drawComponent() {
-        this.ctx.fillStyle = BACKGROUND_COLOR
+        this.ctx.fillStyle = SIDE_PANEL_BACKGROUND_COLOR
         this.ctx.fillRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height)
 
         this.availableCards.draw(this.ctx)
@@ -82,7 +73,7 @@ export class GameCardsComponent implements AfterViewInit {
 
     mouseClick(event: MouseEvent) {
         let point = new Point(event.offsetX,event.offsetY)
-        let trainCardKey = this.availableCards.trainCardTouched(point)
+        let trainCardKey = this.availableCards.entityTouched(point)
         if (trainCardKey > -1) {
             let newCard = this.trainCards.shift()
             this.availableCards.replaceTrainCard(trainCardKey,newCard)
