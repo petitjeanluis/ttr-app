@@ -1,32 +1,35 @@
-import {Drawable} from "../models/drawable";
-import {Player} from "../models/player";
-import {PlayerCard} from "./player-card";
-import {Point} from "../models/point";
-import {EntityContainer} from "../models/entity-container";
+import {OpponentPlayerCard} from './opponent-player-card'
+import {Point} from '../models/point'
 import {
     OPPONENT_CARD_SPACING,
     OPPONENT_CARD_X,
     OPPONENT_CARD_Y,
-    PLAYER_CARD_HEIGHT
-} from "../resources/player-info-constants";
+    OPPONENT_PLAYER_CARD_HEIGHT
+} from '../resources/player-info-constants'
+import {PlayerSummaryState} from '../state/player-summary-state';
 
-export class OpponentCardPool implements EntityContainer {
+export class OpponentCardPool {
 
-    private opponentCards: PlayerCard[]
+    private opponentCards: OpponentPlayerCard[] = []
+    private readonly ctx: CanvasRenderingContext2D
 
-    constructor(opponents: Player[]) {
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+
+    setOpponentCards(opponents: PlayerSummaryState[]) {
         this.opponentCards = []
         for (let  i = 0; i < opponents.length; i++) {
-            let point = new Point(0, 0)
+            const point = new Point(0, 0)
             point.x = OPPONENT_CARD_X
-            point.y = OPPONENT_CARD_Y + (PLAYER_CARD_HEIGHT + OPPONENT_CARD_SPACING) * i
-            this.opponentCards.push(new PlayerCard(point, opponents[i]))
+            point.y = OPPONENT_CARD_Y + (OPPONENT_PLAYER_CARD_HEIGHT + OPPONENT_CARD_SPACING) * i
+            this.opponentCards.push(new OpponentPlayerCard(point, opponents[i], this.ctx))
         }
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
+    draw(): void {
         this.opponentCards.forEach(opponentCard => {
-            opponentCard.draw(ctx)
+            opponentCard.draw()
         })
     }
 

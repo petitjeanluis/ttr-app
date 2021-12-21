@@ -1,46 +1,38 @@
-import {Point} from "../models/point";
-import {InteractiveEntity} from "../models/interactive-entity";
+import {Point} from '../models/point'
+import {TouchableEntity} from '../interfaces/touchable-entity'
 import {
-    PILE_CARD_COLOR, PILE_CARD_FONT, PILE_CARD_FONT_COLOR, TRAIN_CARD_HEIGHT,
-    TRAIN_CARD_PILE_Y,
-    TRAIN_CARD_PILE_X,
+    PILE_CARD_FONT,
+    PILE_CARD_FONT_COLOR,
+    TRAIN_CARD_HEIGHT,
     TRAIN_CARD_WIDTH
-} from "../resources/game-cards-constants";
+} from '../resources/game-cards-constants'
+import {CARD_COLOR} from '../resources/constants';
+import {Utils} from '../resources/utils';
 
-export class TrainCardPile extends InteractiveEntity{
+export class TrainCardPile extends TouchableEntity{
 
+    private point: Point
 
-    constructor() {
-        super(new Point(TRAIN_CARD_PILE_X,TRAIN_CARD_PILE_Y))
+    constructor(point: Point, ctx: CanvasRenderingContext2D) {
+        super(ctx)
+        this.point = point
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
-        ctx.save()
-        ctx.fillStyle = PILE_CARD_COLOR
-        ctx.fillRect(this.location.x,this.location.y,TRAIN_CARD_WIDTH,TRAIN_CARD_HEIGHT)
-        ctx.fillStyle = PILE_CARD_FONT_COLOR
-        ctx.font = PILE_CARD_FONT
-        ctx.fillText("TRAIN",this.location.x+21,this.location.y+22)
-        ctx.fillText("CARDS",this.location.x+18,this.location.y+40)
-        ctx.restore()
+    draw(): void {
+        this.ctx.fillStyle = CARD_COLOR
+        this.ctx.fillRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH,TRAIN_CARD_HEIGHT)
+
+        this.ctx.strokeStyle = 'black'
+        this.ctx.strokeRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH,TRAIN_CARD_HEIGHT)
+
+        this.ctx.fillStyle = PILE_CARD_FONT_COLOR
+        this.ctx.font = PILE_CARD_FONT
+        this.ctx.fillText('TRAIN', this.point.x + 30, this.point.y + 25)
+        this.ctx.fillText('CARDS', this.point.x + 28, this.point.y + 44)
     }
 
     isTouched(point: Point): boolean {
-        let xMin = this.location.x
-        let yMin = this.location.y
-        let xMax = xMin + TRAIN_CARD_WIDTH
-        let yMax = yMin + TRAIN_CARD_HEIGHT
-
-        if (
-            point.x >= xMin &&
-            point.x < xMax &&
-            point.y >= yMin &&
-            point.y < yMax
-        ) {
-            return true
-        } else {
-            return false
-        }
+        return Utils.rectangleTouched(point, this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
 }

@@ -1,18 +1,18 @@
-import {
-    TRAIN_CARD_HEIGHT,
-    TRAIN_CARD_PILE_X, TRAIN_CARD_PILE_Y, TRAIN_CARD_SPACING,
-    TRAIN_CARD_WIDTH,
-} from "./game-cards-constants";
-import {SIDE_PANEL_WIDTH} from "./constants";
-import {BOARD_HEIGHT} from "./board-constants";
+import {CARD_SPACING, SIDE_PANEL_WIDTH} from './constants';
 
-export const PLAYER_CARD_FONT_COLOR = "black"
 export const FONT_MARGIN = 5
-export const PLAYER_CARD_WIDTH = 110
-export const PLAYER_CARD_HEIGHT = 80
+export const OPPONENT_PLAYER_CARD_WIDTH = 120
+export const OPPONENT_PLAYER_CARD_HEIGHT = 86
 
-export const OPPONENT_CARD_SPACING = TRAIN_CARD_SPACING
-export const OPPONENT_CARD_X = (SIDE_PANEL_WIDTH-PLAYER_CARD_WIDTH) / 2
+export const OPPONENT_CARD_SPACING = CARD_SPACING
+export const OPPONENT_CARD_X = (SIDE_PANEL_WIDTH - OPPONENT_PLAYER_CARD_WIDTH) / 2
 export const OPPONENT_CARD_Y = OPPONENT_CARD_SPACING
-export const OPPONENT_CARD_COLOR = "#D3D3D3"
+export const OPPONENT_CARD_BORDER_WIDTH = 3
+
+export const ACTIVE_PLAYER_DETAILS_X = 16
+export const ACTIVE_PLAYER_DETAILS_Y = 390
+export const ACTIVE_PLAYER_DETAILS_WIDTH = 168
+export const ACTIVE_PLAYER_DETAILS_HEIGHT = 130
+
+export const PLAYER_INFO_FONT = 'bold 13px serif'
 

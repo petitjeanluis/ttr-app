@@ -1,37 +1,53 @@
-import { Drawable } from "../models/drawable"
-import { PathPiece } from "./path-piece";
-import {Point} from "../models/point";
+import { PathPiece } from './path-piece';
+import {Point} from '../models/point';
+import {TrainColor} from '../models/train-color';
+import {TouchableEntity} from '../interfaces/touchable-entity';
+import {PathID} from '../models/types';
 
-export class Path implements Drawable{
-    id: number
-    playerId: number
-    cityOneId: number
-    cityTwoId: number
-    pathPieces: PathPiece[]
+export class Path extends TouchableEntity {
+    private id: PathID
+    private owned: boolean
+    private trainColor: TrainColor
+    private playerId: number
+    private cityOneId: number
+    private cityTwoId: number
+    private readonly pathPieces: PathPiece[]
 
-    constructor(id: number, cityOneId: number, cityTwoId: number, pathPieces: PathPiece[], playerId?: number) {
-        this.id = id
-        this.cityOneId = cityOneId
-        this.cityTwoId = cityTwoId
-        this.pathPieces = pathPieces
+
+    constructor(path: any, ctx: CanvasRenderingContext2D, playerId?: number) {
+        super(ctx)
+        this.id = path.id
+        this.owned = false
+        this.trainColor = path.trainColor
+        this.cityOneId = path.cityOneId
+        this.cityTwoId = path.cityTwoId
+        this.pathPieces = []
+
         playerId ? this.playerId = playerId : this.playerId = null
+
+        path.paths.forEach(pathPiece => {
+            this.pathPieces.push(new PathPiece(new Point(pathPiece.x, pathPiece.y), pathPiece.degrees, this.ctx))
+        })
     }
 
-    public draw(ctx: CanvasRenderingContext2D) {
+    public draw(): void {
       this.pathPieces.forEach(
         piece => {
-          piece.draw(ctx)
+            piece.owned = this.owned
+            piece.trainColor = this.trainColor
+            piece.draw()
         }
       )
     }
 
-    public setColor(color: string) {
-        this.pathPieces.forEach(p => p.color = color)
+    public setOwner(trainType: TrainColor): void {
+        this.owned = true;
+        this.trainColor = trainType
     }
 
     isTouched(point: Point): boolean {
-        for (let i = 0; i < this.pathPieces.length; i++) {
-            if (this.pathPieces[i].isTouched(point)) {
+        for (const pathPiece of this.pathPieces) {
+            if (pathPiece.isTouched(point)) {
                 return true
             }
         }

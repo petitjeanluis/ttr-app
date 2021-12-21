@@ -1,13 +1,13 @@
-import {InteractiveEntity} from "../models/interactive-entity";
-import {Point} from "../models/point";
+import {TouchableEntity} from '../interfaces/touchable-entity'
+import {Point} from '../models/point'
 
-export class DestinationCard extends InteractiveEntity {
+export class DestinationCard extends TouchableEntity {
 
-    constructor(location: Point) {
-        super(location)
+    constructor(ctx: CanvasRenderingContext2D) {
+        super(ctx)
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
+    draw(): void {
     }
 
     isTouched(point: Point): boolean {

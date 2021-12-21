@@ -1,26 +1,26 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core'
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BoardComponent } from './components/board/board.component';
-import { GameViewComponent } from './components/game-view/game-view.component';
-import { DestinationCardSelectionComponent } from './components/destination-card-selection/destination-card-selection.component';
-import { GameCardsComponent } from './components/game-cards/game-cards.component';
-import { PlayerInfoComponent } from './components/player-info/player-info.component';
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { BoardComponent } from './components/board/board.component'
+import { CardBankComponent } from './components/card-bank/card-bank.component'
+import { PlayerBankComponent } from './components/player-bank/player-bank.component';
+import { ModalComponent } from './components/modal/modal.component'
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
-    GameViewComponent,
-    DestinationCardSelectionComponent,
-    GameCardsComponent,
-    PlayerInfoComponent
+    CardBankComponent,
+    PlayerBankComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

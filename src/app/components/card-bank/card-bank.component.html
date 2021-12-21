@@ -1,0 +1,28 @@
+<canvas #gameCards (click)="mouseClick($event)"></canvas>
+<ng-container *ngIf="destinationCards && destinationCards.length == 3">
+
+    <modal #destinationCardOptionsModal>
+            <div class="row">
+                <div class="card" (click)="cardSelected(0)" [ngClass]="isSelected(0) ? 'color-border' : null" style="cursor: pointer">
+                    {{ destinationCards[0].value }}
+                    <br/>
+                    {{ destinationCards[0].city1Name }} --> {{ destinationCards[0].city2Name }}
+                </div>
+                <div class="card" (click)="cardSelected(1)" [ngClass]="isSelected(1) ? 'color-border' : null" style="cursor: pointer">
+                    {{ destinationCards[1].value }}
+                    <br/>
+                    {{ destinationCards[1].city1Name }} --> {{ destinationCards[1].city2Name }}
+                </div>
+                <div class="card" (click)="cardSelected(2)" [ngClass]="isSelected(2) ? 'color-border' : null" style="cursor: pointer">
+                    {{ destinationCards[2].value }}
+                    <br/>
+                    {{ destinationCards[2].city1Name }} --> {{ destinationCards[2].city2Name }}
+                </div>
+            </div>
+        <div class="row" style="justify-content: center">
+            <div class="ok-button" (click)="submitSelection()">
+                Select
+            </div>
+        </div>
+    </modal>
+</ng-container>

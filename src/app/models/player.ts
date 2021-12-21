@@ -1,6 +1,6 @@
-import { Destination } from "./destination"
-import { PlayerColor } from "./player-color";
-import {TrainCard} from "../entities/train-card";
+import { Destination } from './destination'
+import { PlayerColor } from './player-color'
+import {TrainCard} from '../entities/train-card'
 
 export class Player {
     id: number
@@ -8,6 +8,6 @@ export class Player {
     color: PlayerColor
     trainsCards: TrainCard[]
     destinationCards: Destination[]
-    availableTrains: number
+    trainCount: number
     score?: number
 }

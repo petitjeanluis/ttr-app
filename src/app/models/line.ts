@@ -1,4 +1,4 @@
-import {Point} from "./point";
+import {Point} from './point'
 
 export class Line {
 
@@ -7,13 +7,13 @@ export class Line {
     b: number
 
     static fromPoints(point1: Point, point2: Point): Line {
-        let slope = (point2.y - point1.y) / (point2.x - point1.x)
-        let intercept = point1.y - slope*point1.x
-        return new Line(slope,intercept)
+        const slope = (point2.y - point1.y) / (point2.x - point1.x)
+        const intercept = point1.y - slope * point1.x
+        return new Line(slope, intercept)
     }
 
     static fromSlopeAndIntercept(slope: number, intercept: number): Line {
-        return new Line(slope,intercept)
+        return new Line(slope, intercept)
     }
 
     private constructor(m: number, b: number) {
@@ -22,11 +22,11 @@ export class Line {
     }
 
     public isPointBelowLine(point: Point): boolean {
-        return point.y >= this.m*point.x + this.b
+        return point.y >= this.m * point.x + this.b
     }
 
     public isPointAboveLine(point: Point): boolean {
-        return point.y <= this.m*point.x + this.b
+        return point.y <= this.m * point.x + this.b
     }
 
 }

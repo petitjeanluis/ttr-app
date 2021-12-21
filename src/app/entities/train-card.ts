@@ -1,20 +1,23 @@
-import {InteractiveEntity} from "../models/interactive-entity";
-import {Point} from "../models/point";
-import {TrainType} from "../models/train-type";
-import {TRAIN_CARD_HEIGHT, TRAIN_CARD_WIDTH} from "../resources/game-cards-constants";
+import {TouchableEntity} from '../interfaces/touchable-entity'
+import {Point} from '../models/point'
+import {TrainColor} from '../models/train-color'
+import {TRAIN_CARD_HEIGHT, TRAIN_CARD_WIDTH} from '../resources/game-cards-constants'
+import {Utils} from '../resources/utils';
 
-export class TrainCard extends InteractiveEntity {
+export class TrainCard extends TouchableEntity {
 
     private static idCounter = 0
-    trainType: TrainType
-    isWild: boolean
-    color: string
-    id: number
+    trainColor: TrainColor
+    private readonly isWild: boolean
+    private readonly color: string
+    private id: number
+    public readonly point: Point
 
-    constructor(location: Point, trainType: TrainType) {
-        super(location)
-        this.trainType = trainType
-        if (trainType === TrainType.WILD) {
+    constructor(point: Point, trainType: TrainColor, ctx: CanvasRenderingContext2D) {
+        super(ctx)
+        this.point = point
+        this.trainColor = trainType
+        if (trainType === TrainColor.WILD) {
             this.isWild = true
         } else {
             this.color = trainType.toString()
@@ -22,52 +25,36 @@ export class TrainCard extends InteractiveEntity {
         this.id = TrainCard.idCounter++
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
+    draw(): void {
         if (this.isWild) {
-            this.drawWild(ctx)
+            this.drawWild()
         } else {
-            this.drawRegular(ctx)
+            this.drawRegular()
         }
+        this.ctx.strokeStyle = 'black'
+        this.ctx.strokeRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
     isTouched(point: Point): boolean {
-        let xMin = this.location.x
-        let yMin = this.location.y
-        let xMax = xMin + TRAIN_CARD_WIDTH
-        let yMax = yMin + TRAIN_CARD_HEIGHT
-
-        if (
-            point.x >= xMin &&
-            point.x < xMax &&
-            point.y >= yMin &&
-            point.y < yMax
-        ) {
-            return true
-        } else {
-            return false
-        }
+        return Utils.rectangleTouched(point, this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
-    private drawRegular(ctx: CanvasRenderingContext2D) {
-        ctx.save()
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.location.x,this.location.y,TRAIN_CARD_WIDTH,TRAIN_CARD_HEIGHT)
-        ctx.restore()
+    private drawRegular(): void {
+        this.ctx.fillStyle = this.color
+        this.ctx.fillRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
-    private drawWild(ctx: CanvasRenderingContext2D) {
-        ctx.save()
-        const widthPiece = TRAIN_CARD_WIDTH/8
-        let x = this.location.x
-        for (let trainCardType in TrainType){
-            if (TrainType[trainCardType] == "wild") {
+    private drawWild(): void {
+        const widthPiece = TRAIN_CARD_WIDTH / 8
+        let x = this.point.x
+        for (const trainCardType in TrainColor){
+            if (trainCardType === 'WILD') {
                 continue
             }
-            ctx.fillStyle = TrainType[trainCardType]
-            ctx.fillRect(x,this.location.y,widthPiece,TRAIN_CARD_HEIGHT)
+            this.ctx.fillStyle = TrainColor[trainCardType]
+            this.ctx.fillRect(x, this.point.y, widthPiece, TRAIN_CARD_HEIGHT)
             x += widthPiece
         }
-        ctx.restore()
     }
 
 }
