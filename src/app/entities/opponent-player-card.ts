@@ -5,15 +5,15 @@ import {
     OPPONENT_PLAYER_CARD_HEIGHT,
     OPPONENT_PLAYER_CARD_WIDTH
 } from '../resources/player-info-constants';
-import {PlayerSummaryState} from '../state/player-summary-state';
-import {CARD_COLOR} from '../resources/constants';
+import {Opponent} from '../state/opponent';
+import {CARD_COLOR, COLOR_MAP} from '../resources/constants';
 
 export class OpponentPlayerCard extends Entity {
 
-    private player: PlayerSummaryState
+    private player: Opponent
     private point: Point
 
-    constructor(point: Point, player: PlayerSummaryState, ctx: CanvasRenderingContext2D) {
+    constructor(point: Point, player: Opponent, ctx: CanvasRenderingContext2D) {
         super(ctx)
         this.player = player
         this.point = point
@@ -24,7 +24,7 @@ export class OpponentPlayerCard extends Entity {
 
         this.ctx.fillStyle = CARD_COLOR
         this.ctx.fillRect(this.point.x, this.point.y, OPPONENT_PLAYER_CARD_WIDTH, OPPONENT_PLAYER_CARD_HEIGHT)
-        this.ctx.strokeStyle = this.player.color
+        this.ctx.strokeStyle = COLOR_MAP[this.player.color]
         this.ctx.lineWidth = OPPONENT_CARD_BORDER_WIDTH
         this.ctx.strokeRect(this.point.x, this.point.y, OPPONENT_PLAYER_CARD_WIDTH, OPPONENT_PLAYER_CARD_HEIGHT)
 

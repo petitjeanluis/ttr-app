@@ -1,18 +1,16 @@
 <canvas #playerInfo (click)="mouseClick($event)"></canvas>
 <modal #destinationCardsModal closeable="true">
-    <ng-container *ngIf="playerDetails && playerDetails.playerState">
-        <ng-container *ngFor="let dummy of playerDetails.playerState.destinationCards; let i = index">
-            <ng-container *ngIf="i % 3 === 0">
-                <div class="row">
-                    <ng-container *ngFor="let destination of playerDetails.playerState.destinationCards; let j = index">
-                        <div *ngIf="j >= i && j < i + 3" class="card">
-                            {{ destination.value }}
-                            <br/>
-                            {{ destination.city1Name }} --> {{ destination.city2Name }}
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
+    <ng-container *ngFor="let _ of destinationCards; let i = index">
+        <ng-container *ngIf="i % 3 === 0">
+            <div class="row">
+                <ng-container *ngFor="let destination of destinationCards; let j = index">
+                    <div *ngIf="j >= i && j < i + 3" class="card">
+                        {{ destination.value }}
+                        <br/>
+                        {{ getCityName(destination.city1) }} {{ getCityName(destination.city2) }}
+                    </div>
+                </ng-container>
+            </div>
         </ng-container>
     </ng-container>
 </modal>

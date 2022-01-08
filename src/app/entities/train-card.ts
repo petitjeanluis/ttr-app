@@ -1,6 +1,7 @@
 import {TouchableEntity} from '../interfaces/touchable-entity'
 import {Point} from '../models/point'
 import {TrainColor} from '../models/train-color'
+import { COLOR_MAP } from '../resources/constants';
 import {TRAIN_CARD_HEIGHT, TRAIN_CARD_WIDTH} from '../resources/game-cards-constants'
 import {Utils} from '../resources/utils';
 
@@ -9,7 +10,6 @@ export class TrainCard extends TouchableEntity {
     private static idCounter = 0
     trainColor: TrainColor
     private readonly isWild: boolean
-    private readonly color: string
     private id: number
     public readonly point: Point
 
@@ -20,7 +20,7 @@ export class TrainCard extends TouchableEntity {
         if (trainType === TrainColor.WILD) {
             this.isWild = true
         } else {
-            this.color = trainType.toString()
+            this.trainColor = trainType
         }
         this.id = TrainCard.idCounter++
     }
@@ -40,7 +40,7 @@ export class TrainCard extends TouchableEntity {
     }
 
     private drawRegular(): void {
-        this.ctx.fillStyle = this.color
+        this.ctx.fillStyle = COLOR_MAP[this.trainColor]
         this.ctx.fillRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 

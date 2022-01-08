@@ -7,6 +7,8 @@ import {
     PATH_PIECE_WIDTH
 } from '../resources/board-constants'
 import {TrainColor} from '../models/train-color';
+import { COLOR_MAP } from '../resources/constants';
+import { PlayerColor } from '../models/player-color';
 
 export class PathPiece extends TouchableEntity {
 
@@ -14,7 +16,6 @@ export class PathPiece extends TouchableEntity {
     private readonly width: number
     private readonly height: number
     private readonly degrees: number
-    public owned: boolean
     public trainColor: TrainColor
 
     private readonly topLeftPoint: Point
@@ -28,12 +29,13 @@ export class PathPiece extends TouchableEntity {
     private readonly leftLine: Line
 
 
-    constructor(point: Point, degrees: number, ctx: CanvasRenderingContext2D) {
+    constructor(point: Point, degrees: number, trainColor: TrainColor, ctx: CanvasRenderingContext2D) {
         super(ctx)
         this.width = PATH_PIECE_WIDTH
         this.height = PATH_PIECE_HEIGHT
         this.degrees = degrees
         this.point = point
+        this.trainColor = trainColor
 
         const shiftX = this.point.x + PATH_PIECE_WIDTH / 2
         const shiftY = this.point.y + PATH_PIECE_HEIGHT / 2
@@ -61,19 +63,19 @@ export class PathPiece extends TouchableEntity {
     }
 
 
-    public draw(): void {
+    public draw(playerColor: PlayerColor): void {
         this.ctx.save()
 
         this.ctx.translate(this.point.x + this.width / 2, this.point.y + this.height / 2)
         this.ctx.rotate((Math.PI / 180) * this.degrees)
 
-        if (this.owned) {
-            this.ctx.fillStyle = this.trainColor
+        if (playerColor) {
+            this.ctx.fillStyle = COLOR_MAP[playerColor]
             this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height)
         }
         else {
             this.ctx.lineWidth = PATH_PIECE_LINE_WIDTH
-            this.ctx.strokeStyle = this.trainColor
+            this.ctx.strokeStyle = COLOR_MAP[this.trainColor]
             this.ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height)
         }
 

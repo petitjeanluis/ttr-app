@@ -17,23 +17,28 @@ export class AvailableTrainCards {
     constructor(ctx: CanvasRenderingContext2D) {
         this.ctx = ctx;
         this.trainCardMap = new Map<number, TrainCard>()
-    }
 
-    updateAvailableTrainCards(trainCardColors: TrainColor[]) {
-        if (trainCardColors.length != NUMBER_OF_TOP_CARDS) {
-            throw new Error("number of available cards provided is not " + NUMBER_OF_TOP_CARDS);
-        }
-
-        this.trainCardMap.clear()
-        for (let i = 0; i < trainCardColors.length; i++) {
+        for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
             const x = TRAIN_CARD_X
             const y = TRAIN_CARD_Y + (TRAIN_CARD_HEIGHT + CARD_SPACING) * i
-            const trainCard = new TrainCard(new Point(x, y), trainCardColors[i], this.ctx)
+            const trainCard = new TrainCard(new Point(x, y), TrainColor.BLACK, this.ctx)
             this.trainCardMap.set(i, trainCard)
         }
     }
 
-    draw(): void {
+    private updateAvailableTrainCards(trainCardColors: TrainColor[]) {
+        if (trainCardColors.length != NUMBER_OF_TOP_CARDS) {
+            throw new Error("number of available cards provided is not " + NUMBER_OF_TOP_CARDS);
+        }
+
+        for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
+            this.trainCardMap.get(i).trainColor = trainCardColors[i]
+        }
+    }
+
+    draw(availableCards: TrainColor[]): void {
+        this.updateAvailableTrainCards(availableCards)
+
         for (const trainCard of this.trainCardMap.values()) {
             trainCard.draw()
         }

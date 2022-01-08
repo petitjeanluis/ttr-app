@@ -3,9 +3,12 @@ import { GameEngineService } from '../../services/game-engine.service'
 import {City} from '../../entities/city'
 import {Path} from '../../entities/path'
 import {Point} from '../../models/point'
-import {BOARD_COLOR, BOARD_HEIGHT, BOARD_WIDTH, CITIES, PATHS} from '../../resources/board-constants'
-import {TrainColor} from '../../models/train-color';
+import {BOARD_COLOR, BOARD_HEIGHT, BOARD_WIDTH, CITIES, PATHS, PATH_PIECE_WIDTH} from '../../resources/board-constants'
 import {PathID, PlayerID} from '../../models/types';
+import { StateUpdate } from 'src/app/state/state-update'
+import { PlayerColor } from 'src/app/models/player-color'
+import { Player } from 'src/app/state/player'
+import { state } from '@angular/animations'
 
 @Component({
   selector: 'app-board',
@@ -20,10 +23,9 @@ export class BoardComponent implements  AfterViewInit {
 	ctx: CanvasRenderingContext2D;
 
     private cities: City[] = []
-    private paths: Path[] = []
+    private paths: Map<PathID, Path> = new Map<PathID, Path>()
 
 	constructor(private gameEngine: GameEngineService) {
-
     }
 
 	ngAfterViewInit(): void {
@@ -38,29 +40,33 @@ export class BoardComponent implements  AfterViewInit {
         )
         PATHS.forEach(
             path => {
-                this.paths.push(new Path(path, this.ctx))
+                this.paths.set(path.id, new Path(path, this.ctx))
             }
         )
 
-        this.gameEngine.registerBoardComponent(this)
+        this.gameEngine.registerStateUpdateHandler(this.stateUpdateHandler.bind(this))
     }
 
-    updatePaths(pathMap: Map<PathID, PlayerID>) {
+    stateUpdateHandler(stateUpdate: StateUpdate): void {
+        const playerIdToColor = {}
+        stateUpdate.opponents.forEach(opponet => {
+            playerIdToColor[opponet.id] = opponet.color
+        });
+        playerIdToColor[stateUpdate.player.id] = stateUpdate.player.color
 
-    }
-
-	mouseClick(event: MouseEvent): void {
-        for (const path of this.paths) {
-            if (path.isTouched(new Point(event.offsetX, event.offsetY))) {
-                if (this.gameEngine.canTakePath(0)) { // TODO: Add path id
-                    path.setOwner(TrainColor.GREEN) // TODO: Add player color
-                    this.drawComponent()
-                }
-            }
+        const pathColorMap: Map<PathID, PlayerColor> = new Map<PathID, PlayerColor>()
+        for(const [pathId, playerId] of Object.entries(stateUpdate.pathOwnership)) {
+            pathColorMap.set(parseInt(pathId), playerIdToColor[playerId])
         }
-	}
 
-    drawComponent(): void {
+        this.drawComponent(pathColorMap)
+    }
+
+    drawComponent(pathColorMap: Map<PathID, PlayerColor>): void {
+        for (let [pathId, playerColor] of pathColorMap.entries()) {
+            this.paths.get(pathId).setPlayerColor(playerColor)
+        }
+
         this.ctx.fillStyle = BOARD_COLOR
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
 
@@ -71,5 +77,21 @@ export class BoardComponent implements  AfterViewInit {
         this.paths.forEach(
             path => path.draw()
         )
+	}
+
+    private updatePaths(pathOwnership: Map<PathID, PlayerColor>) {
+        const playerColorMap = {}
+
+        // pathOwnership.forEach((value, key) => {
+        //     this.paths.get(key).setColor(value)
+        // })
+    }
+
+    mouseClick(event: MouseEvent): void {
+        for (const path of this.paths.values()) {
+            if (path.isTouched(new Point(event.offsetX, event.offsetY))) {
+                this.gameEngine.takePath(0)
+            }
+        }
 	}
 }

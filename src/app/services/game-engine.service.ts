@@ -1,198 +1,134 @@
 import { Injectable } from '@angular/core'
-import {BoardComponent} from '../components/board/board.component'
-import {CardBankComponent} from '../components/card-bank/card-bank.component'
-import {DESTINATION_CARDS, NUMBER_OF_TOP_CARDS, TRAIN_CARDS} from '../resources/game-cards-constants';
 import {Destination} from '../models/destination';
-import {Utils} from '../resources/utils';
 import {TrainColor} from '../models/train-color';
-import {PlayerBankComponent} from '../components/player-bank/player-bank.component';
 import {PathID} from '../models/types';
-import {PlayerSummaryState} from '../state/player-summary-state';
-import {PlayerColor} from '../models/player-color';
-import {PlayerState} from '../state/player-state';
-import {ID_CITY_MAP} from '../resources/board-constants';
+import { GameSocketService } from './game-socket.service';
+import { GameState } from '../state/game-state';
+import { Router } from '@angular/router';
+import { LocalStoreService } from './local-store.service';
+import { StateUpdate as StateUpdate } from '../state/state-update';
+import { Payload } from '../state/payload';
+import { PlayerAction } from '../state/player-action';
+import { BehaviorSubject, filter, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameEngineService {
 
-    public boardComponent: BoardComponent
-    public cardBankComponent: CardBankComponent
-    public playerBankComponent: PlayerBankComponent
+    MENU_STATES: GameState[] = [GameState.MATCH_MAKING, GameState.PICK_INITIAL_DESTINATION_CARDS]
+    GAME_STATES: GameState[] = [GameState.TURN, GameState.PICK_SECOND_TRAIN_CARD, GameState.PICK_DESTINATION_CARDS]
 
-    private boardResolve: any
-    private playerBankResolve: any
-    private cardBankResolve: any
+    private stateUpdateEmitter: BehaviorSubject<StateUpdate>
 
-    // Game State
-    private playerId: number = 0
-    private destinationCards: Destination[] = []
-    private trainCardColors: TrainColor[] = []
-    private playerState: PlayerState = this.getDummyPlayerState()
+    constructor(private gameSocketService: GameSocketService, private router: Router, private localStoreService: LocalStoreService) {
+        this.stateUpdateEmitter = new BehaviorSubject<StateUpdate>(null)
 
-    constructor() {
-        DESTINATION_CARDS.forEach(
-            card => {
-
-                this.destinationCards.push(
-                    {
-                        city1: card.city1,
-                        city1Name: ID_CITY_MAP[card.city1],
-                        city2: card.city2,
-                        city2Name: ID_CITY_MAP[card.city2],
-                        value: card.value
-                    })
+        // this.router.navigate(['menu'])
+        this.localStoreService.clearGameId()
+        
+        this.gameSocketService.onConnected().then(() => {
+            if (this.localStoreService.getGameId() && this.localStoreService.getPlayerName()) {
+                this.router.navigate(['game-view']).then(_ => {
+                    this.joinGame(this.localStoreService.getPlayerName(), this.localStoreService.getGameId())
+                })
             }
-        )
-        Utils.shuffleArray(this.destinationCards)
+            else {
+                this.router.navigate(['menu'])
+            }
+        })
 
-        TRAIN_CARDS.forEach(
-            trainCard => {
-                for (let i = 0; i < trainCard.count; i++) {
-                    this.trainCardColors.push(trainCard.trainColor)
+        this.gameSocketService.registerStateUpdateHandler((stateUpdate: StateUpdate) => {
+            console.log("game engine received status");
+            if (this.MENU_STATES.includes(stateUpdate.gameState)) {
+                this.router.url != '/menu' && this.router.navigate(['menu'])
+            }
+            else if (this.GAME_STATES.includes(stateUpdate.gameState)) {
+                this.router.url != '/game-view' && this.router.navigate(['game-view'])
+            }
+            
+            setTimeout(() => {this.stateUpdateEmitter.next(stateUpdate)})
+        })
+    }
+   
+	registerStateUpdateHandler(stateUpdateHandler: (stateUpdate: StateUpdate) => void): Subscription {
+		return this.stateUpdateEmitter.pipe(filter((item) => item != null)).subscribe(stateUpdateHandler)
+	}
+
+    // Actions
+
+    createGame(playerName: string) {
+        this.localStoreService.setPlayerName(playerName)
+
+        this.gameSocketService.registerSingleShotStateUpdateHandler(
+            (stateUpdate: StateUpdate) => {
+                if (stateUpdate) {
+                    this.localStoreService.setGameId(stateUpdate.gameId)
                 }
             }
         )
-        Utils.shuffleArray(this.trainCardColors)
 
-        const boardRegisteredPromise = new Promise(resolve => this.boardResolve = resolve)
-        const playerBankRegisteredPromise = new Promise(resolve => this.playerBankResolve = resolve)
-        const cardBankRegisteredPromise = new Promise(resolve => this.cardBankResolve = resolve)
-        Promise.all([boardRegisteredPromise,playerBankRegisteredPromise, cardBankRegisteredPromise]).then(() => this.onComponentsReady())
-    }
-
-    // Set Up
-
-	public registerBoardComponent(boardComponent: BoardComponent): void {
-		this.boardComponent = boardComponent
-        this.boardResolve()
-	}
-
-	public registerCardBankComponent(gameCardsComponent: CardBankComponent): void {
-        this.cardBankComponent = gameCardsComponent
-        this.cardBankResolve()
-    }
-
-    public registerPlayerBankComponent(playerBankComponent: PlayerBankComponent): void {
-        this.playerBankComponent = playerBankComponent
-        this.playerBankResolve()
-    }
-
-    public onComponentsReady() {
-
-        const trainCardColors = []
-        for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
-            trainCardColors.push(this.getNextTrainCardColor())
+        const payload: Payload = {
+            action: PlayerAction.CREATE_GAME,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                name: this.localStoreService.getPlayerName()
+            }
         }
-        this.cardBankComponent.updateAvailableTrainCards(trainCardColors)
-        this.cardBankComponent.drawComponent()
-
-        // set path ownership
-        this.boardComponent.drawComponent()
-
-        this.playerBankComponent.setPlayerState(this.playerState)
-        this.playerBankComponent.setPlayerSummaryStates(this.getDummyPlayerSummaryStates())
-        this.playerBankComponent.drawComponent()
+        this.gameSocketService.sendMessage(payload)
     }
 
-    // Actions
+    joinGame(playerName: string, gameId: number) {
+        this.localStoreService.setPlayerName(playerName)
+        this.localStoreService.setGameId(gameId)
+
+        const payload: Payload = {
+            action: PlayerAction.JOIN_GAME,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                name: this.localStoreService.getPlayerName(),
+                gameId: this.localStoreService.getGameId()
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
+    }
+
+    startGame() {
+        const payload: Payload = {
+            action: PlayerAction.START_GAME,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId()
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
+    }
+
+    pickDestinationCards(destinationCards: number[]): void {
+        const payload: Payload = {
+            action: PlayerAction.PICK_DESTINATION_CARDS,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId(),
+                destinationCardIds: destinationCards
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
+    }
+
     randomTrainCardPicked(): void {
-        const newCardColor: TrainColor = this.getNextTrainCardColor()
-        this.playerState.trainCards.push(newCardColor)
-        this.playerBankComponent.drawComponent()
+        
     }
 
     trainCardPicked(trainCardSlot: number, pickedTrainCardColor: TrainColor): void {
-        this.playerState.trainCards.push(pickedTrainCardColor)
-        this.playerBankComponent.drawComponent()
-
-        this.cardBankComponent.replaceTrainCard(trainCardSlot, this.getNextTrainCardColor());
-        this.cardBankComponent.drawComponent()
+        
     }
 
     destinationCardsPicked(destinationCards: Destination[], destinationCardSelection: boolean[]) {
-        for (let i = 0; i < 3; i++) {
-            if (destinationCardSelection[i]) {
-                this.playerState.destinationCards.push(destinationCards[i])
-            }
-            else {
-                this.destinationCards.push(destinationCards[i])
-            }
-        }
-        this.playerBankComponent.drawComponent()
+        
     }
 
-    // Getters
-
-    getNextTrainCardColor(): TrainColor {
-        return this.trainCardColors.shift()
-    }
-
-    getDestinationCards(): Destination[] {
-        const destinations: Destination[] = []
-        for (let i = 0; i < 3; i++) {
-            destinations.push(this.destinationCards.shift())
-        }
-        return destinations
-    }
-
-    public canTakePath(pathId: PathID) {
-        return true
-    }
-
-
-    getDummyPlayerState(): PlayerState {
-        return {
-            id: 0,
-            name: 'Gina',
-            color: PlayerColor.YELLOW,
-            trainCards: [],
-            destinationCards: [],
-            trainCount: 5,
-            pathScore: 5
-        }
-    }
-
-    getDummyPlayerSummaryStates(): PlayerSummaryState[] {
-        const player1: PlayerSummaryState = {
-            id: 1,
-            name: 'Luis',
-            color: PlayerColor.GREEN,
-            trainCardCount: 5,
-            destinationCardCount: 5,
-            trainCount: 10,
-            pathScore : 50
-        }
-        const player2: PlayerSummaryState = {
-            id: 1,
-            name: 'Gabby',
-            color: PlayerColor.BLUE,
-            trainCardCount: 5,
-            destinationCardCount: 5,
-            trainCount: 10,
-            pathScore: 40
-        }
-        const player3: PlayerSummaryState = {
-            id: 1,
-            name: 'Boots',
-            color: PlayerColor.RED,
-            trainCardCount: 5,
-            destinationCardCount: 5,
-            trainCount: 10,
-            pathScore: 60
-        }
-
-        const player4: PlayerSummaryState = {
-            id: 1,
-            name: 'Squirrel',
-            color: PlayerColor.BLACK,
-            trainCardCount: 5,
-            destinationCardCount: 5,
-            trainCount: 10,
-            pathScore: 60
-        }
-
-        return [player1, player2, player3, player4]
+    takePath(pathId: PathID) {
+        
     }
 }

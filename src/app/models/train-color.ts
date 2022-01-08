@@ -1,13 +1,11 @@
 export enum TrainColor {
-    BLACK = '#171109',
-    WHITE = '#fefad9',
-    RED = '#b03818',
-    GREEN = '#a7b641',
-    BLUE = '#4791a7',
-    YELLOW = '#fde344',
-    PINK = '#cd7b8c',
-    ORANGE = '#e5923a',
-    WILD = '#96a191'
+    BLACK = "BLACK",
+    WHITE = "WHITE",
+    RED = "RED",
+    GREEN = "GREEN",
+    BLUE = "BLUE",
+    YELLOW = "YELLOW",
+    PINK = "PINK",
+    ORANGE = "ORANGE",
+    WILD = "WILD"
 }
-
-

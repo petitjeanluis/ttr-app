@@ -1,0 +1,40 @@
+<ng-conatiner *ngIf="showMenu">
+    <div class="container">
+        <button class="menu-button blue" (click)="createGame()">Create Game</button>
+    </div>
+    
+    <div class="container">
+        <label style="margin: 2px;">Game Id</label>
+        <input [(ngModel)]="gameId" type="number" min="1" max="6" style="margin: 2px; width: 120px;" 
+        (keyup)="$event.keyCode == 13 ? joinGame(): null"/>
+        <button class="menu-button green" (click)="joinGame()">Join Game</button>
+    </div>
+</ng-conatiner>
+
+<ng-conatiner *ngIf="showPlayers">
+    <div>
+        <h1>Game {{stateUpdate.gameId}} Roster</h1>
+        <ul>
+            <li *ngFor="let name of getOrderedRoster()">{{name}}</li>
+        </ul>
+    </div>
+    <div *ngIf="isHost()">
+        <button class="menu-button green" (click)="startGame()">Start Game</button>
+    </div>
+</ng-conatiner>
+
+<ng-conatiner *ngIf="showDestinationCards">
+    <div class="row">
+        <div *ngFor="let destination of getDestinations(); let i = index" 
+        (click)="cardSelected(i)" [ngClass]="isSelected(i) ? 'color-border' : null" class="card" style="cursor: pointer">
+            {{ destination.value }}
+            <br/>
+            {{ getCityName(destination.city1) }} --> {{ getCityName(destination.city2) }}
+        </div>
+    </div>
+    <div class="row" style="justify-content: center">
+        <div class="ok-button" (click)="submitSelection()">
+            Select
+        </div>
+    </div>
+</ng-conatiner>

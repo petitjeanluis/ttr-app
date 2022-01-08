@@ -1282,6 +1282,7 @@ export const CITIES: any[] = [
         name: 'Winnipeg'
     }
 ]
+
 export const ID_CITY_MAP = {
     0: 'Atlanta',
     1: 'Boston',

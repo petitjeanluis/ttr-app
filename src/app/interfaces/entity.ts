@@ -7,6 +7,6 @@ export abstract class Entity implements Drawable {
         this.ctx = ctx
     }
 
-    abstract draw(): void
+    abstract draw(data?: any): void
 
 }

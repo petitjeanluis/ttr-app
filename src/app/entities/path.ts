@@ -3,46 +3,41 @@ import {Point} from '../models/point';
 import {TrainColor} from '../models/train-color';
 import {TouchableEntity} from '../interfaces/touchable-entity';
 import {PathID} from '../models/types';
+import { PlayerColor } from '../models/player-color';
 
 export class Path extends TouchableEntity {
     private id: PathID
-    private owned: boolean
+    private playerColor: PlayerColor
     private trainColor: TrainColor
-    private playerId: number
     private cityOneId: number
     private cityTwoId: number
     private readonly pathPieces: PathPiece[]
 
 
-    constructor(path: any, ctx: CanvasRenderingContext2D, playerId?: number) {
+    constructor(path: any, ctx: CanvasRenderingContext2D) {
         super(ctx)
         this.id = path.id
-        this.owned = false
+        this.playerColor = null
         this.trainColor = path.trainColor
         this.cityOneId = path.cityOneId
         this.cityTwoId = path.cityTwoId
         this.pathPieces = []
 
-        playerId ? this.playerId = playerId : this.playerId = null
-
         path.paths.forEach(pathPiece => {
-            this.pathPieces.push(new PathPiece(new Point(pathPiece.x, pathPiece.y), pathPiece.degrees, this.ctx))
+            this.pathPieces.push(new PathPiece(new Point(pathPiece.x, pathPiece.y), pathPiece.degrees, this.trainColor, this.ctx))
         })
     }
 
     public draw(): void {
       this.pathPieces.forEach(
         piece => {
-            piece.owned = this.owned
-            piece.trainColor = this.trainColor
-            piece.draw()
+            piece.draw(this.playerColor)
         }
       )
     }
 
-    public setOwner(trainType: TrainColor): void {
-        this.owned = true;
-        this.trainColor = trainType
+    public setPlayerColor(playerColor: PlayerColor): void {
+        this.playerColor = playerColor
     }
 
     isTouched(point: Point): boolean {

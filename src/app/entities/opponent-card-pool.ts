@@ -6,7 +6,7 @@ import {
     OPPONENT_CARD_Y,
     OPPONENT_PLAYER_CARD_HEIGHT
 } from '../resources/player-info-constants'
-import {PlayerSummaryState} from '../state/player-summary-state';
+import {Opponent} from '../state/opponent';
 
 export class OpponentCardPool {
 
@@ -17,7 +17,7 @@ export class OpponentCardPool {
         this.ctx = ctx
     }
 
-    setOpponentCards(opponents: PlayerSummaryState[]) {
+    private setOpponentDetails(opponents: Opponent[]) {
         this.opponentCards = []
         for (let  i = 0; i < opponents.length; i++) {
             const point = new Point(0, 0)
@@ -27,7 +27,9 @@ export class OpponentCardPool {
         }
     }
 
-    draw(): void {
+    draw(opponentDetails: Opponent[]): void {
+        this.setOpponentDetails(opponentDetails)
+        
         this.opponentCards.forEach(opponentCard => {
             opponentCard.draw()
         })

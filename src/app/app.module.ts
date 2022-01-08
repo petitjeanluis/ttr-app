@@ -8,6 +8,9 @@ import { CardBankComponent } from './components/card-bank/card-bank.component'
 import { PlayerBankComponent } from './components/player-bank/player-bank.component';
 import { ModalComponent } from './components/modal/modal.component'
 import {CommonModule} from '@angular/common';
+import { MenuComponent } from './components/menu/menu.component';
+import { GameView } from './components/game/game-view.component'
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -15,12 +18,15 @@ import {CommonModule} from '@angular/common';
     BoardComponent,
     CardBankComponent,
     PlayerBankComponent,
-    ModalComponent
+    ModalComponent,
+    MenuComponent,
+    GameView
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

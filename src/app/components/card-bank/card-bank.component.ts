@@ -1,8 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core'
 import {GameEngineService} from '../../services/game-engine.service'
-import {TrainCard} from '../../entities/train-card'
 import {Point} from '../../models/point'
-import {Utils} from '../../resources/utils'
 import {Destination} from '../../models/destination'
 import { AvailableTrainCards} from '../../entities/available-train-cards'
 import {TrainCardPile} from '../../entities/train-card-pile'
@@ -17,6 +15,7 @@ import {
 import {ModalComponent} from '../modal/modal.component';
 import {ID_CITY_MAP} from '../../resources/board-constants';
 import {TrainColor} from '../../models/train-color';
+import { StateUpdate } from 'src/app/state/state-update'
 
 
 @Component({
@@ -58,15 +57,15 @@ export class CardBankComponent implements AfterViewInit {
 
         this.availableCards = new AvailableTrainCards(this.ctx)
 
-        this.gameEngine.registerCardBankComponent(this)
+        this.gameEngine.registerStateUpdateHandler(this.stateUpdateHandler.bind(this))
     }
 
-    updateAvailableTrainCards(trainCardColors: TrainColor[]) {
-        this.availableCards.updateAvailableTrainCards(trainCardColors)
+    stateUpdateHandler(stateUpdate: StateUpdate): void {
+        this.drawComponent(stateUpdate.availableCards)
     }
 
-    drawComponent(): void {
-        this.availableCards.draw()
+    drawComponent(availableTrainCards: TrainColor[]): void {
+        this.availableCards.draw(availableTrainCards)
 
         this.trainCardPile.draw()
 
@@ -84,9 +83,9 @@ export class CardBankComponent implements AfterViewInit {
             this.gameEngine.randomTrainCardPicked()
         }
         else if (this.destinationCardPile.isTouched(point)) {
-            this.destinationCards = this.gameEngine.getDestinationCards()
-            this.selectedDestinationCards = [false, false, false]
-            this.destinationCardOptionsModal.openModal()
+            // this.destinationCards = this.gameEngine.getDestinationCards()
+            // this.selectedDestinationCards = [false, false, false]
+            // this.destinationCardOptionsModal.openModal()
         }
     }
 
