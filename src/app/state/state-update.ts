@@ -7,7 +7,7 @@ export class StateUpdate {
     pathOwnership: object
     availableCards: TrainColor[]
     player: Player
-    activePlayerId: string
+    activePlayerId: number
     gameState: GameState
     gameId: number
     hostId: number

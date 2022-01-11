@@ -29,6 +29,10 @@ export class GameSocketService {
     this.webSocket.onmessage = this.processMessage.bind(this)
   }
 
+  disconnect() {
+    this.webSocket.close()
+  }
+
   onConnected(): Promise<void> {
     return this.onSocketConnected
   }
@@ -44,7 +48,6 @@ export class GameSocketService {
   processMessage(mesageEvent: MessageEvent) {
     const stateUpdate: StateUpdate = JSON.parse(mesageEvent.data.toString())
 
-    console.log("stateUpdate received from server:")
     console.log(stateUpdate);
     
     this.stateUpdateEmitter.next(stateUpdate)
@@ -53,7 +56,6 @@ export class GameSocketService {
   sendMessage(payload: Payload) {
     const jsonPayload = JSON.stringify(payload)
 
-    console.log("payload sent to server:")
     console.log(jsonPayload);
     
     this.webSocket.send(jsonPayload)

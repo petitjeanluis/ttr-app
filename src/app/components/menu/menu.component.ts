@@ -3,6 +3,7 @@ import { Destination } from 'src/app/models/destination';
 import { ID_CITY_MAP, PATHS } from 'src/app/resources/board-constants';
 import { DESTINATION_MAP } from 'src/app/resources/destination-cards';
 import { GameEngineService } from 'src/app/services/game-engine.service';
+import { LocalStoreService } from 'src/app/services/local-store.service';
 import { GameState } from 'src/app/state/game-state';
 import { StateUpdate } from 'src/app/state/state-update';
 
@@ -14,6 +15,7 @@ import { StateUpdate } from 'src/app/state/state-update';
 export class MenuComponent {
 
   gameId: number
+  playerName: string
 
   showMenu: boolean
   showPlayers: boolean
@@ -21,9 +23,11 @@ export class MenuComponent {
   stateUpdate: StateUpdate
   selectedDestinationCards = [false, false, false]
 
-  constructor(private gameEngineService: GameEngineService) { 
+  constructor(private gameEngineService: GameEngineService, localStoreService: LocalStoreService) { 
     this.gameEngineService.registerStateUpdateHandler(this.stateUpdateHandler.bind(this))
 
+    this.playerName = localStoreService.getPlayerName()
+    this.gameId = localStoreService.getGameId()
     this.stateUpdate = null
     this.showMenu = true
     this.showPlayers = false
@@ -112,12 +116,20 @@ export class MenuComponent {
   }
 
   createGame() {
-    this.gameEngineService.createGame("Luis")
+    if (!this.playerName) {
+      alert("Must Enter Player Name!")
+      return
+    }
+    this.gameEngineService.createGame(this.playerName)
   }
 
   joinGame() {
+    if (!this.playerName) {
+      alert("Must Enter Player Name!")
+      return
+    }
     if (this.gameId) {
-      this.gameEngineService.joinGame("Squirrel", this.gameId)
+      this.gameEngineService.joinGame(this.playerName, this.gameId)
     }
   }
 

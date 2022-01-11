@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core'
-import {Destination} from '../models/destination';
-import {TrainColor} from '../models/train-color';
-import {PathID} from '../models/types';
 import { GameSocketService } from './game-socket.service';
 import { GameState } from '../state/game-state';
 import { Router } from '@angular/router';
@@ -10,6 +7,8 @@ import { StateUpdate as StateUpdate } from '../state/state-update';
 import { Payload } from '../state/payload';
 import { PlayerAction } from '../state/player-action';
 import { BehaviorSubject, filter, Subscription } from 'rxjs';
+import { PathID } from '../models/types';
+import { TrainColor } from '../models/train-color';
 
 @Injectable({
   providedIn: 'root'
@@ -24,31 +23,35 @@ export class GameEngineService {
     constructor(private gameSocketService: GameSocketService, private router: Router, private localStoreService: LocalStoreService) {
         this.stateUpdateEmitter = new BehaviorSubject<StateUpdate>(null)
 
-        // this.router.navigate(['menu'])
-        this.localStoreService.clearGameId()
-        
+        // 659475        
         this.gameSocketService.onConnected().then(() => {
-            if (this.localStoreService.getGameId() && this.localStoreService.getPlayerName()) {
-                this.router.navigate(['game-view']).then(_ => {
-                    this.joinGame(this.localStoreService.getPlayerName(), this.localStoreService.getGameId())
-                })
-            }
-            else {
-                this.router.navigate(['menu'])
-            }
+            this.router.navigate(['menu'])
         })
 
-        this.gameSocketService.registerStateUpdateHandler((stateUpdate: StateUpdate) => {
-            console.log("game engine received status");
-            if (this.MENU_STATES.includes(stateUpdate.gameState)) {
-                this.router.url != '/menu' && this.router.navigate(['menu'])
-            }
-            else if (this.GAME_STATES.includes(stateUpdate.gameState)) {
-                this.router.url != '/game-view' && this.router.navigate(['game-view'])
-            }
-            
-            setTimeout(() => {this.stateUpdateEmitter.next(stateUpdate)})
-        })
+        this.gameSocketService.registerStateUpdateHandler(this.handleStateUpdate.bind(this))
+
+        // for mock only
+        // this.gameSocketService.onConnected().then(() => {
+        //     this.gameSocketService.disconnect()
+        //     this.router.navigate(['game-view']).then(() => {
+        //         const stateUpdate: StateUpdate = JSON.parse('{"pathOwnership": {}, "opponents": [{"name": "Squirrel", "color": "GREEN", "trainCardCount": 4, "destinationCardCount": 2, "trainCount": 45, "pathScore": 0}], "availableCards": ["RED", "PINK", "WHITE", "BLACK", "BLUE"], "player": {"id": 744912, "name": "Luis", "connectionId": "LvWOedd-oAMCLfg=", "color": "BLACK", "trainCards": ["YELLOW", "YELLOW", "BLACK", "ORANGE"], "destinationCards": [21, 29], "trainCount": 45, "pathScore": 0, "destinationOptionSet": []}, "activePlayerId": 744912, "gameState": "TURN", "gameId": 256156, "hostId": 744912}')
+        //         this.handleStateUpdate(stateUpdate)
+        //     })
+        // })
+        // this.gameSocketService.sendMessage = (payload: Payload) => {
+        //     console.log(payload);
+        // }
+    }
+
+    handleStateUpdate(stateUpdate: StateUpdate) {
+        if (this.MENU_STATES.includes(stateUpdate.gameState)) {
+            this.router.url != '/menu' && this.router.navigate(['menu'])
+        }
+        else if (this.GAME_STATES.includes(stateUpdate.gameState)) {
+            this.router.url != '/game-view' && this.router.navigate(['game-view'])
+        }
+        
+        setTimeout(() => {this.stateUpdateEmitter.next(stateUpdate)})
     }
    
 	registerStateUpdateHandler(stateUpdateHandler: (stateUpdate: StateUpdate) => void): Subscription {
@@ -104,31 +107,62 @@ export class GameEngineService {
         this.gameSocketService.sendMessage(payload)
     }
 
-    pickDestinationCards(destinationCards: number[]): void {
+    pickTrainCard(trainCardIndex: number): void {
         const payload: Payload = {
-            action: PlayerAction.PICK_DESTINATION_CARDS,
+            action: PlayerAction.PICK_TRAIN_CARD,
             payload: {
                 id: this.localStoreService.getPlayerId(),
                 gameId: this.localStoreService.getGameId(),
-                destinationCardIds: destinationCards
+                trainCardIndex: trainCardIndex
             }
         }
         this.gameSocketService.sendMessage(payload)
     }
 
-    randomTrainCardPicked(): void {
-        
+    pickRandomTrainCard() {
+        const payload: Payload = {
+            action: PlayerAction.PICK_RANDOM_TRAIN_CARD,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId()
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
     }
 
-    trainCardPicked(trainCardSlot: number, pickedTrainCardColor: TrainColor): void {
-        
+    getDestinationCards(): void {
+        const payload: Payload = {
+            action: PlayerAction.GET_DESTINATION_CARDS,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId()
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
     }
 
-    destinationCardsPicked(destinationCards: Destination[], destinationCardSelection: boolean[]) {
-        
+    pickDestinationCards(destinationCardIds: number[]) {
+        const payload: Payload = {
+            action: PlayerAction.PICK_DESTINATION_CARDS,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId(),
+                destinationCardIds: destinationCardIds
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
     }
 
-    takePath(pathId: PathID) {
-        
+    build(pathId: PathID, trainCards: TrainColor[]) {
+        const payload: Payload = {
+            action: PlayerAction.BUILD,
+            payload: {
+                id: this.localStoreService.getPlayerId(),
+                gameId: this.localStoreService.getGameId(),
+                pathId: pathId,
+                trainCards: trainCards
+            }
+        }
+        this.gameSocketService.sendMessage(payload)
     }
 }

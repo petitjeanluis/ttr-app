@@ -1,5 +1,10 @@
 <ng-conatiner *ngIf="showMenu">
     <div class="container">
+        <label style="margin: 2px;">Player Name</label>
+        <input [(ngModel)]="playerName" type="text" maxlength="12" style="margin: 2px; width: 120px;" />
+    </div>
+
+    <div class="container">
         <button class="menu-button blue" (click)="createGame()">Create Game</button>
     </div>
     

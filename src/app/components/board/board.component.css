@@ -1,0 +1,19 @@
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.train-card {
+    width: 175px;
+    height: 40px;
+    margin: 16px;
+    padding: 16px;
+    background-color: yellow;
+    border-radius: 3px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}

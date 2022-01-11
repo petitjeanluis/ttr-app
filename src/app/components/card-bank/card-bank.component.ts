@@ -36,6 +36,7 @@ export class CardBankComponent implements AfterViewInit {
     private availableCards: AvailableTrainCards
     private trainCardPile: TrainCardPile
     private destinationCardPile: DestinationCardPile
+    private active: boolean = false
 
     destinationCards: Destination[]
     selectedDestinationCards = [false, false, false]
@@ -43,7 +44,7 @@ export class CardBankComponent implements AfterViewInit {
     mouseClickSubject = new Subject<MouseEvent>()
 
     constructor(private gameEngine: GameEngineService) {
-        this.mouseClickSubject.pipe(throttleTime(1000)).subscribe(this.mouseClick.bind(this))
+        this.mouseClickSubject.pipe(throttleTime(500)).subscribe(this.mouseClick.bind(this))
     }
 
     ngAfterViewInit(): void {
@@ -65,6 +66,8 @@ export class CardBankComponent implements AfterViewInit {
     }
 
     stateUpdateHandler(stateUpdate: StateUpdate): void {
+        this.active = stateUpdate.activePlayerId === stateUpdate.player.id
+        
         this.drawComponent(stateUpdate.availableCards)
     }
 
@@ -77,6 +80,8 @@ export class CardBankComponent implements AfterViewInit {
     }
 
     mouseClick(event: MouseEvent): void {
+        if (!this.active) return
+
         const point = new Point(event.offsetX, event.offsetY)
 
         const trainCardIndex = this.availableCards.entityTouched(point)

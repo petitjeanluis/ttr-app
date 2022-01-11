@@ -1,6 +1,6 @@
 import {AfterViewInit, OnDestroy,Component, ElementRef, ViewChild} from '@angular/core';
 import {OpponentCardPool} from '../../entities/opponent-card-pool';
-import {SIDE_PANEL_HEIGHT, SIDE_PANEL_WIDTH} from '../../resources/constants';
+import {CARD_SPACING, SIDE_PANEL_HEIGHT, SIDE_PANEL_WIDTH} from '../../resources/constants';
 import {PlayerCard} from '../../entities/player-card';
 import {Opponent} from '../../state/opponent';
 import {Player} from '../../state/player';
@@ -14,6 +14,7 @@ import { ID_CITY_MAP } from 'src/app/resources/board-constants';
 import { Subscription } from 'rxjs';
 import { ChildActivationStart } from '@angular/router';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ACTIVE_PLAYER_DETAILS_X, ACTIVE_PLAYER_DETAILS_Y } from 'src/app/resources/player-info-constants';
 
 @Component({
   selector: 'app-player-info',
@@ -60,13 +61,41 @@ export class PlayerBankComponent implements AfterViewInit, OnDestroy {
        }
        this.destinationCards = newDestinationCards
         
-        this.drawComponent(stateUpdate.player, stateUpdate.opponents)
+        this.drawComponent(stateUpdate)
     }
 
-    drawComponent(player: Player, opponentDetails: Opponent[]): void {
-        this.playerCard.draw(player)
-        this.opponentCardPool.draw(opponentDetails)
+    drawComponent(stateUpdate: StateUpdate): void {
+        this.playerCard.draw(stateUpdate.player)
+        this.opponentCardPool.draw(stateUpdate.opponents)
+
+
+        this.drawCurrentPlayer(stateUpdate)
     }
+
+    drawCurrentPlayer(stateUpdate: StateUpdate) {
+        let currentPlayer: string = ""
+
+        if (stateUpdate.activePlayerId == stateUpdate.player.id) {
+            currentPlayer = stateUpdate.player.name
+        }
+        else {
+            for (const opponent of stateUpdate.opponents) {
+                if (stateUpdate.activePlayerId == opponent.id) {
+                    currentPlayer = opponent.name
+                    break
+                }
+            }
+        }
+
+        this.ctx.save()
+        this.ctx.fillStyle = 'white'
+        this.ctx.fillRect(ACTIVE_PLAYER_DETAILS_X, ACTIVE_PLAYER_DETAILS_Y - 20, 170, 16)
+        this.ctx.fillStyle = 'black'
+        this.ctx.font = 'normal 14px serif'
+        this.ctx.fillText(`Current Turn: ${currentPlayer}`,ACTIVE_PLAYER_DETAILS_X, ACTIVE_PLAYER_DETAILS_Y - CARD_SPACING)
+        this.ctx.restore()
+    }
+
 
     mouseClick(event: MouseEvent): void {
         let point = new Point(event.offsetX, event.offsetY)

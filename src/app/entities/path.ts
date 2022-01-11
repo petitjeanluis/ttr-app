@@ -6,11 +6,9 @@ import {PathID} from '../models/types';
 import { PlayerColor } from '../models/player-color';
 
 export class Path extends TouchableEntity {
-    private id: PathID
+    id: PathID
+    trainColor: TrainColor
     private playerColor: PlayerColor
-    private trainColor: TrainColor
-    private cityOneId: number
-    private cityTwoId: number
     private readonly pathPieces: PathPiece[]
 
 
@@ -19,13 +17,15 @@ export class Path extends TouchableEntity {
         this.id = path.id
         this.playerColor = null
         this.trainColor = path.trainColor
-        this.cityOneId = path.cityOneId
-        this.cityTwoId = path.cityTwoId
         this.pathPieces = []
 
         path.paths.forEach(pathPiece => {
             this.pathPieces.push(new PathPiece(new Point(pathPiece.x, pathPiece.y), pathPiece.degrees, this.trainColor, this.ctx))
         })
+    }
+
+    public getLength() {
+        return this.pathPieces.length
     }
 
     public draw(): void {
@@ -38,6 +38,10 @@ export class Path extends TouchableEntity {
 
     public setPlayerColor(playerColor: PlayerColor): void {
         this.playerColor = playerColor
+    }
+
+    public hasPlayerColor(): boolean {
+        return this.playerColor != null
     }
 
     isTouched(point: Point): boolean {

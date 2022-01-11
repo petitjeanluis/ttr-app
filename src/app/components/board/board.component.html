@@ -1,1 +1,23 @@
-<canvas #board (click)="mouseClick($event)"></canvas>
+<canvas #board (click)="mouseClickSubject.next($event)"></canvas>
+<modal #trainCardModal>
+    <h2 style="text-align: center; margin: 0;">Select Train Cards</h2>
+    <h3 style="text-align: center; margin: 4px 0px;">Available : Picked</h3>
+
+    <ng-container *ngFor="let trainCardEntry of trainCardEntries; let i = index">
+        <ng-container *ngIf="i % 3 == 0">
+            <div class="row">
+                <ng-container *ngFor="let trainCardEntry of trainCardEntries; let j = index">
+                    <div *ngIf="j >= i && j < i + 3" [ngStyle]="{'background-color': getColor(trainCardEntry[0])}" 
+                        class="train-card" (click)="trainCardSelected(trainCardEntry[0])">
+                        {{trainCardEntry[1].count}} : <span>{{trainCardEntry[1].selected}}</span>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <div class="button-container">
+        <button class="modal-button green" (click)="build()">Build</button>
+        <button class="modal-button blue" (click)="trainCardModal.closeModal()">Cancel</button>
+    </div>
+</modal>
