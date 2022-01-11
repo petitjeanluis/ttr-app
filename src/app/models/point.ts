@@ -9,16 +9,15 @@ export class Point {
 
     /**
      * Rotation Matrix
-     * x' = x*cos(d) - y*sin(d)
-     * y' = y*cos(d) + x*sin(d)
+     * x' = (x-px)*cos(d) - (y-py)*sin(d) + px
+     * y' = (x-px)*sin(d) + (y-py)*cos(d) + py
      */
-    public rotatePoint(degrees: number): void {
-        this.x = this.x * Math.cos((Math.PI / 180) * degrees) - this.y * Math.sin((Math.PI / 180) * degrees)
-        this.y = this.y * Math.cos((Math.PI / 180) * degrees) + this.x * Math.sin((Math.PI / 180) * degrees)
-    }
+    public rotateAroundPivotPoint(degrees: number, px: number, py: number): void {
+        const dx = this.x - px
+        const dy = this.y - py
 
-    public translatePoint(x: number, y: number): void {
-        this.x = this.x + x
-        this.y = this.y + y
+        this.x = dx * Math.cos((Math.PI / 180) * degrees) - dy * Math.sin((Math.PI / 180) * degrees) + px
+        this.y = dx * Math.sin((Math.PI / 180) * degrees) + dy * Math.cos((Math.PI / 180) * degrees) + py
     }
+    
 }

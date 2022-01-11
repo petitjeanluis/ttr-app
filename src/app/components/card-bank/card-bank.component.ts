@@ -16,6 +16,7 @@ import {ModalComponent} from '../modal/modal.component';
 import {ID_CITY_MAP} from '../../resources/board-constants';
 import {TrainColor} from '../../models/train-color';
 import { StateUpdate } from 'src/app/state/state-update'
+import { Subject, throttleTime } from 'rxjs'
 
 
 @Component({
@@ -39,7 +40,10 @@ export class CardBankComponent implements AfterViewInit {
     destinationCards: Destination[]
     selectedDestinationCards = [false, false, false]
 
+    mouseClickSubject = new Subject<MouseEvent>()
+
     constructor(private gameEngine: GameEngineService) {
+        this.mouseClickSubject.pipe(throttleTime(1000)).subscribe(this.mouseClick.bind(this))
     }
 
     ngAfterViewInit(): void {
@@ -75,22 +79,16 @@ export class CardBankComponent implements AfterViewInit {
     mouseClick(event: MouseEvent): void {
         const point = new Point(event.offsetX, event.offsetY)
 
-        const [trainCardSlot, trainColor] = this.availableCards.entityTouched(point)
-        if (trainCardSlot > -1) {
-            this.gameEngine.trainCardPicked(trainCardSlot, trainColor)
+        const trainCardIndex = this.availableCards.entityTouched(point)
+        if (trainCardIndex != null) {
+            this.gameEngine.pickTrainCard(trainCardIndex)
         }
         else if (this.trainCardPile.isTouched(point)){
-            this.gameEngine.randomTrainCardPicked()
+            this.gameEngine.pickRandomTrainCard()
         }
         else if (this.destinationCardPile.isTouched(point)) {
-            // this.destinationCards = this.gameEngine.getDestinationCards()
-            // this.selectedDestinationCards = [false, false, false]
-            // this.destinationCardOptionsModal.openModal()
+            this.gameEngine.getDestinationCards()
         }
-    }
-
-    replaceTrainCard(trainCardSlot: number, trainCardolor: TrainColor) {
-        this.availableCards.replaceTrainCard(trainCardSlot, trainCardolor)
     }
 
     getCityName(cityId: number) {
@@ -112,6 +110,6 @@ export class CardBankComponent implements AfterViewInit {
             return
         }
         this.destinationCardOptionsModal.closeModal()
-        this.gameEngine.destinationCardsPicked(this.destinationCards, this.selectedDestinationCards)
+        this.gameEngine.pickDestinationCards([])
     }
 }

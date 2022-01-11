@@ -47,17 +47,13 @@ export class PlayerBankComponent implements AfterViewInit, OnDestroy {
         this.playerCard = new PlayerCard(this.ctx)
 
         this.stateUpdateSubscription = this.gameEngineService.registerStateUpdateHandler(this.stateUpdateHandler.bind(this))
-
-        console.log("player bank after view initialized");   
     }
 
     ngOnDestroy(): void {
         this.stateUpdateSubscription.unsubscribe()
     }
 
-    stateUpdateHandler(stateUpdate: StateUpdate): void {
-       console.log("player bank received state update");       
-    
+    stateUpdateHandler(stateUpdate: StateUpdate): void {   
        const newDestinationCards = []
        for (let destinationId of stateUpdate.player.destinationCards) {
         newDestinationCards.push(DESTINATION_MAP.get(destinationId))

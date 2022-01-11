@@ -11,18 +11,18 @@ import {TrainColor} from '../models/train-color';
 
 export class AvailableTrainCards {
 
-    private readonly trainCardMap: Map<number, TrainCard>
+    private readonly trainCards: TrainCard[]
     private ctx: CanvasRenderingContext2D
 
     constructor(ctx: CanvasRenderingContext2D) {
         this.ctx = ctx;
-        this.trainCardMap = new Map<number, TrainCard>()
+        this.trainCards = []
 
         for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
             const x = TRAIN_CARD_X
             const y = TRAIN_CARD_Y + (TRAIN_CARD_HEIGHT + CARD_SPACING) * i
             const trainCard = new TrainCard(new Point(x, y), TrainColor.BLACK, this.ctx)
-            this.trainCardMap.set(i, trainCard)
+            this.trainCards[i] = trainCard
         }
     }
 
@@ -32,38 +32,24 @@ export class AvailableTrainCards {
         }
 
         for (let i = 0; i < NUMBER_OF_TOP_CARDS; i++) {
-            this.trainCardMap.get(i).trainColor = trainCardColors[i]
+            this.trainCards[i].trainColor = trainCardColors[i]
         }
     }
 
     draw(availableCards: TrainColor[]): void {
         this.updateAvailableTrainCards(availableCards)
 
-        for (const trainCard of this.trainCardMap.values()) {
+        for (const trainCard of this.trainCards.values()) {
             trainCard.draw()
         }
     }
 
-    entityTouched(point: Point): [number, TrainColor] {
-        for (const [key, trainCard] of this.trainCardMap) {
-            if (trainCard.isTouched(point)) {
-                return [key, trainCard.trainColor]
+    entityTouched(point: Point): number {
+        for (let i = 0; i < this.trainCards.length; i++) {
+            if (this.trainCards[i].isTouched(point)) {            
+                return i
             }
         }
-        return [-1, null]
+        return null
     }
-
-    replaceTrainCard(trainCardSlot: number, trainColor: TrainColor) {
-        if (trainCardSlot >= this.trainCardMap.size) {
-            throw new Error('trainCardSlot is out of range!')
-        }
-
-        const x = TRAIN_CARD_X
-        const y = TRAIN_CARD_Y + (TRAIN_CARD_HEIGHT + CARD_SPACING) * trainCardSlot
-
-        this.trainCardMap.set(trainCardSlot, new TrainCard(new Point(x, y), trainColor, this.ctx))
-    }
-
-
-
 }

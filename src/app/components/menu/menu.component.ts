@@ -62,6 +62,10 @@ export class MenuComponent {
   }
 
   getDestinations(): Destination[] {
+    if (!this.stateUpdate || this.stateUpdate.player.destinationOptionSet.length == 0){
+      return null
+    }
+    
     const destinations: Destination[] = []
 
     for(let destinationId of this.stateUpdate.player.destinationOptionSet) {

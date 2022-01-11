@@ -26,7 +26,7 @@ export const PATHS: any[] = [
         cityOneId: 33,
         cityTwoId: 31,
         trainColor: TrainColor.WILD,
-        paths: [{x: 39, y: 75, degrees: 93}]
+        paths: [{x: 39, y: 75, degrees: -87}]
     },
     // vancouver - seatlle - 2
     {
@@ -34,7 +34,7 @@ export const PATHS: any[] = [
         cityOneId: 33,
         cityTwoId: 31,
         trainColor: TrainColor.WILD,
-        paths: [{x: 52, y: 76, degrees: 93}]
+        paths: [{x: 52, y: 76, degrees: -87}]
     },
     // seatle - calgary
     {
@@ -53,7 +53,7 @@ export const PATHS: any[] = [
         cityOneId: 31,
         cityTwoId: 24,
         trainColor: TrainColor.WILD,
-        paths: [{x: 27, y: 119, degrees: 113}]
+        paths: [{x: 27, y: 119, degrees: -67}]
     },
     // seatle - portland - 2
     {
@@ -61,7 +61,7 @@ export const PATHS: any[] = [
         cityOneId: 31,
         cityTwoId: 24,
         trainColor: TrainColor.WILD,
-        paths: [{x: 39, y: 124, degrees: 113}]
+        paths: [{x: 39, y: 124, degrees: -67}]
     },
     // portland - san fancisco
     {
@@ -69,9 +69,9 @@ export const PATHS: any[] = [
         cityOneId: 24,
         cityTwoId: 28,
         trainColor: TrainColor.PINK,
-        paths: [{x: 21, y: 167, degrees: 102},
-            {x: 14, y: 198, degrees: 102},
-            {x: 8, y: 230, degrees: 95},
+        paths: [{x: 21, y: 167, degrees: -78},
+            {x: 14, y: 198, degrees: -78},
+            {x: 8, y: 230, degrees: -85},
             {x: 7, y: 262, degrees: 87},
             {x: 11, y: 294, degrees: 80}]
     },
@@ -81,9 +81,9 @@ export const PATHS: any[] = [
         cityOneId: 24,
         cityTwoId: 28,
         trainColor: TrainColor.GREEN,
-        paths: [{x: 8, y: 165, degrees: 104},
-            {x: 0, y: 197, degrees: 101},
-            {x: -5, y: 230, degrees: 95},
+        paths: [{x: 8, y: 165, degrees: -76},
+            {x: 0, y: 197, degrees: -79},
+            {x: -5, y: 230, degrees: -85},
             {x: -6, y: 263, degrees: 89},
             {x: -3, y: 296, degrees: 81}]
     },
@@ -335,8 +335,8 @@ export const PATHS: any[] = [
         cityOneId: 7,
         cityTwoId: 21,
         trainColor: TrainColor.WILD,
-        paths: [{x: 455, y: 177, degrees: 110},
-            {x: 444, y: 207, degrees: 110}]
+        paths: [{x: 455, y: 177, degrees: -70},
+            {x: 444, y: 207, degrees: -70}]
     },
     // denver - omaha
     {
@@ -355,8 +355,8 @@ export const PATHS: any[] = [
         cityOneId: 29,
         cityTwoId: 6,
         trainColor: TrainColor.WILD,
-        paths: [{x: 301, y: 312, degrees: 95},
-            {x: 298, y: 344, degrees: 95}]
+        paths: [{x: 301, y: 312, degrees: -85},
+            {x: 298, y: 344, degrees: -85}]
     },
     // santa fe - el paso
     {
@@ -364,8 +364,8 @@ export const PATHS: any[] = [
         cityOneId: 29,
         cityTwoId: 8,
         trainColor: TrainColor.WILD,
-        paths: [{x: 293, y: 391, degrees: 93},
-            {x: 291, y: 423, degrees: 93}]
+        paths: [{x: 293, y: 391, degrees: -87},
+            {x: 291, y: 423, degrees: -87}]
     },
     // omaha - kansas city
     {
@@ -411,8 +411,8 @@ export const PATHS: any[] = [
         cityOneId: 11,
         cityTwoId: 20,
         trainColor: TrainColor.WILD,
-        paths: [{x: 445, y: 294, degrees: 101},
-            {x: 438, y: 325, degrees: 103}]
+        paths: [{x: 445, y: 294, degrees: -79},
+            {x: 438, y: 325, degrees: -77}]
     },
     // kansas city - oklahoma city
     {
@@ -420,8 +420,8 @@ export const PATHS: any[] = [
         cityOneId: 11,
         cityTwoId: 20,
         trainColor: TrainColor.WILD,
-        paths: [{x: 457, y: 295, degrees: 101},
-            {x: 450, y: 326, degrees: 102}]
+        paths: [{x: 457, y: 295, degrees: -79},
+            {x: 450, y: 326, degrees: -78}]
     },
     // denver - oklahoma city
     {
@@ -552,8 +552,8 @@ export const PATHS: any[] = [
         cityOneId: 5,
         cityTwoId: 13,
         trainColor: TrainColor.WILD,
-        paths: [{x: 479, y: 406, degrees: 130},
-            {x: 499, y: 377, degrees: 119}]
+        paths: [{x: 479, y: 406, degrees: -50},
+            {x: 499, y: 377, degrees: -61}]
     },
     // houston - new orleans
     {
@@ -581,10 +581,10 @@ export const PATHS: any[] = [
         cityTwoId: 0,
         trainColor: TrainColor.YELLOW,
         paths: [
-            {x: 579, y: 430, degrees: 114},
-            {x: 593, y: 402, degrees: 122},
-            {x: 611, y: 376, degrees: 128},
-            {x: 632, y: 352, degrees: 133}
+            {x: 579, y: 430, degrees: -66},
+            {x: 593, y: 402, degrees: -58},
+            {x: 611, y: 376, degrees: -52},
+            {x: 632, y: 352, degrees: -47}
         ]
     },
     // new orleans - atlanta
@@ -593,10 +593,10 @@ export const PATHS: any[] = [
         cityOneId: 18,
         cityTwoId: 0,
         trainColor: TrainColor.ORANGE,
-        paths: [{x: 589, y: 438, degrees: 114},
-            {x: 603, y: 410, degrees: 122},
-            {x: 621, y: 384, degrees: 128},
-            {x: 642, y: 360, degrees: 134}]
+        paths: [{x: 589, y: 438, degrees: -66},
+            {x: 603, y: 410, degrees: -58},
+            {x: 621, y: 384, degrees: -52},
+            {x: 642, y: 360, degrees: -46}]
     },
     // atlanta - miami
     {
@@ -704,8 +704,8 @@ export const PATHS: any[] = [
         cityOneId: 26,
         cityTwoId: 13,
         trainColor: TrainColor.WILD,
-        paths: [{x: 524, y: 297, degrees: 98},
-            {x: 515, y: 329, degrees: 112}]
+        paths: [{x: 524, y: 297, degrees: -82},
+            {x: 515, y: 329, degrees: -68}]
     },
     // kansas city - saint louis
     {
@@ -791,10 +791,10 @@ export const PATHS: any[] = [
         cityOneId: 17,
         cityTwoId: 23,
         trainColor: TrainColor.YELLOW,
-        paths: [{x: 601, y: 284, degrees: 120},
-            {x: 622, y: 259, degrees: 140},
-            {x: 646, y: 237, degrees: 136},
-            {x: 668, y: 213, degrees: 130}]
+        paths: [{x: 601, y: 284, degrees: -60},
+            {x: 622, y: 259, degrees: -40},
+            {x: 646, y: 237, degrees: -44},
+            {x: 668, y: 213, degrees: -50}]
     },
     // raleigh - pittsburgh
     {
@@ -811,8 +811,8 @@ export const PATHS: any[] = [
         cityOneId: 25,
         cityTwoId: 34,
         trainColor: TrainColor.WILD,
-        paths: [{x: 743, y: 242, degrees: 128},
-            {x: 723, y: 267, degrees: 130}]
+        paths: [{x: 743, y: 242, degrees: -52},
+            {x: 723, y: 267, degrees: -50}]
     },
     // raleigh - washington
     {
@@ -820,8 +820,8 @@ export const PATHS: any[] = [
         cityOneId: 25,
         cityTwoId: 34,
         trainColor: TrainColor.WILD,
-        paths: [{x: 752, y: 250, degrees: 128},
-            {x: 732, y: 275, degrees: 130}]
+        paths: [{x: 752, y: 250, degrees: -52},
+            {x: 732, y: 275, degrees: -50}]
     },
     // pittsburgh - washington
     {
@@ -876,8 +876,8 @@ export const PATHS: any[] = [
         cityOneId: 19,
         cityTwoId: 1,
         trainColor: TrainColor.YELLOW,
-        paths: [{x: 785, y: 100, degrees: 125},
-            {x: 766, y: 127, degrees: 124}]
+        paths: [{x: 785, y: 100, degrees: -55},
+            {x: 766, y: 127, degrees: -56}]
     },
     // new york - boston
     {
@@ -885,8 +885,8 @@ export const PATHS: any[] = [
         cityOneId: 19,
         cityTwoId: 1,
         trainColor: TrainColor.RED,
-        paths: [{x: 779, y: 131, degrees: 124},
-            {x: 798, y: 104, degrees: 124}]
+        paths: [{x: 779, y: 131, degrees: -56},
+            {x: 798, y: 104, degrees: -56}]
     },
     // boston - montreal
     {
@@ -922,9 +922,9 @@ export const PATHS: any[] = [
         cityOneId: 32,
         cityTwoId: 16,
         trainColor: TrainColor.WILD,
-        paths: [{x: 670, y: 85, degrees: 110},
-            {x: 687, y: 56, degrees: 130},
-            {x: 714, y: 36, degrees: 160}]
+        paths: [{x: 670, y: 85, degrees: -70},
+            {x: 687, y: 56, degrees: -50},
+            {x: 714, y: 36, degrees: -20}]
     },
     // sault st. marie - montreal
     {
@@ -969,7 +969,7 @@ export const PATHS: any[] = [
         cityTwoId: 23,
         trainColor: TrainColor.WILD,
         paths: [{x: 678, y: 130, degrees: 83},
-            {x: 678, y: 164, degrees: 94}]
+            {x: 678, y: 164, degrees: -86}]
     },
     // pittsburgh - new york
     {
@@ -977,8 +977,8 @@ export const PATHS: any[] = [
         cityOneId: 23,
         cityTwoId: 19,
         trainColor: TrainColor.WHITE,
-        paths: [{x: 700, y: 169, degrees: 150},
-            {x: 728, y: 152, degrees: 148}]
+        paths: [{x: 700, y: 169, degrees: -30},
+            {x: 728, y: 152, degrees: -32}]
     },
     // pittsburgh - new york
     {
@@ -986,8 +986,8 @@ export const PATHS: any[] = [
         cityOneId: 23,
         cityTwoId: 19,
         trainColor: TrainColor.GREEN,
-        paths: [{x: 706, y: 180, degrees: 151},
-            {x: 734, y: 163, degrees: 148}]
+        paths: [{x: 706, y: 180, degrees: -29},
+            {x: 734, y: 163, degrees: -32}]
     },
     // sault st. marie - toronto
     {

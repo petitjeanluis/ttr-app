@@ -4,11 +4,9 @@ import {City} from '../../entities/city'
 import {Path} from '../../entities/path'
 import {Point} from '../../models/point'
 import {BOARD_COLOR, BOARD_HEIGHT, BOARD_WIDTH, CITIES, PATHS, PATH_PIECE_WIDTH} from '../../resources/board-constants'
-import {PathID, PlayerID} from '../../models/types';
+import {PathID} from '../../models/types';
 import { StateUpdate } from 'src/app/state/state-update'
 import { PlayerColor } from 'src/app/models/player-color'
-import { Player } from 'src/app/state/player'
-import { state } from '@angular/animations'
 
 @Component({
   selector: 'app-board',
@@ -88,9 +86,13 @@ export class BoardComponent implements  AfterViewInit {
     }
 
     mouseClick(event: MouseEvent): void {
+        
         for (const path of this.paths.values()) {
             if (path.isTouched(new Point(event.offsetX, event.offsetY))) {
-                this.gameEngine.takePath(0)
+                console.log("touched path " + path);
+                path.setPlayerColor(PlayerColor.BLACK)
+                this.drawComponent(new Map<number, PlayerColor>())
+                return
             }
         }
 	}

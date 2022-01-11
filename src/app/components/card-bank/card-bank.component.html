@@ -1,4 +1,4 @@
-<canvas #gameCards (click)="mouseClick($event)"></canvas>
+<canvas #gameCards (click)="mouseClickSubject.next($event)"></canvas>
 <ng-container *ngIf="destinationCards && destinationCards.length == 3">
 
     <modal #destinationCardOptionsModal>

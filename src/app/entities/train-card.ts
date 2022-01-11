@@ -10,23 +10,16 @@ export class TrainCard extends TouchableEntity {
     private static idCounter = 0
     trainColor: TrainColor
     private readonly isWild: boolean
-    private id: number
     public readonly point: Point
 
-    constructor(point: Point, trainType: TrainColor, ctx: CanvasRenderingContext2D) {
+    constructor(point: Point, trainColor: TrainColor, ctx: CanvasRenderingContext2D) {
         super(ctx)
         this.point = point
-        this.trainColor = trainType
-        if (trainType === TrainColor.WILD) {
-            this.isWild = true
-        } else {
-            this.trainColor = trainType
-        }
-        this.id = TrainCard.idCounter++
+        this.trainColor = trainColor
     }
 
     draw(): void {
-        if (this.isWild) {
+        if (this.trainColor == TrainColor.WILD) {
             this.drawWild()
         } else {
             this.drawRegular()
@@ -35,13 +28,14 @@ export class TrainCard extends TouchableEntity {
         this.ctx.strokeRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
-    isTouched(point: Point): boolean {
+    isTouched(point: Point): boolean {        
         return Utils.rectangleTouched(point, this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
     }
 
     private drawRegular(): void {
         this.ctx.fillStyle = COLOR_MAP[this.trainColor]
         this.ctx.fillRect(this.point.x, this.point.y, TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT)
+        
     }
 
     private drawWild(): void {

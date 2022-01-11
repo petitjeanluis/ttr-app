@@ -17,9 +17,9 @@ export class PlayerCard extends TouchableEntity {
     private point: Point
     private SMALL_TRAIN_CARD_WIDTH = 24
     private SMALL_TRAIN_CARD_HEIGHT = 24
-    private DESTINATION_CARDS_X = ACTIVE_PLAYER_DETAILS_X + 10
+    private DESTINATION_CARDS_X = ACTIVE_PLAYER_DETAILS_X + 8
     private DESTINATION_CARDS_Y = ACTIVE_PLAYER_DETAILS_Y + 95
-    private DESTINATION_CARDS_WIDTH = 55
+    private DESTINATION_CARDS_WIDTH = 40
     private DESTINATION_CARDS_HEIGHT = 26
 
     constructor(ctx: CanvasRenderingContext2D) {
@@ -30,7 +30,8 @@ export class PlayerCard extends TouchableEntity {
     draw(player: Player): void {
         this.ctx.fillStyle = CARD_COLOR
         this.ctx.fillRect(this.point.x, this.point.y, ACTIVE_PLAYER_DETAILS_WIDTH, ACTIVE_PLAYER_DETAILS_HEIGHT)
-        this.ctx.strokeStyle = 'black'
+        this.ctx.strokeStyle = COLOR_MAP[player.color]
+        this.ctx.lineWidth = 4
         this.ctx.strokeRect(this.point.x, this.point.y, ACTIVE_PLAYER_DETAILS_WIDTH, ACTIVE_PLAYER_DETAILS_HEIGHT)
 
         this.drawTrainCards(player)
@@ -40,23 +41,30 @@ export class PlayerCard extends TouchableEntity {
 
     private drawDestinationAndTrainCount(player: Player): void {
         let x = this.DESTINATION_CARDS_X
-        let dx = 93
+        let dx = this.DESTINATION_CARDS_WIDTH + CARD_SPACING
+        let dx2 = dx + this.DESTINATION_CARDS_WIDTH + CARD_SPACING
         let y = this.DESTINATION_CARDS_Y
 
         this.ctx.fillStyle = 'black'
         this.ctx.fillText(player.destinationCards.length.toString(), x, y)
         this.ctx.fillText(player.trainCount.toString(), x + dx, y)
+        this.ctx.fillText(player.pathScore.toString(), x + dx2, y)
+
         y += 2
 
         this.ctx.fillStyle = BOARD_COLOR
         this.ctx.fillRect(x, y, this.DESTINATION_CARDS_WIDTH, this.DESTINATION_CARDS_HEIGHT)
         this.ctx.fillRect(x + dx, y, this.DESTINATION_CARDS_WIDTH, this.DESTINATION_CARDS_HEIGHT)
+        this.ctx.fillRect(x + dx2, y, this.DESTINATION_CARDS_WIDTH + 18, this.DESTINATION_CARDS_HEIGHT)
 
         this.ctx.fillStyle = 'black'
-        this.ctx.fillText('A --> B', x+12, y+16)
+        this.ctx.fillText('A --> B', x+5, y+16)
 
         this.ctx.fillStyle = 'black'
-        this.ctx.fillText('Trains', x+12 + dx, y+16)
+        this.ctx.fillText('Trains', x+5 + dx, y+16)
+
+        this.ctx.fillStyle = 'black'
+        this.ctx.fillText('Path Score', x+5 + dx2, y+16)
 
     }
 
@@ -109,7 +117,7 @@ export class PlayerCard extends TouchableEntity {
             if (trainColor.valueOf() === 'WILD') {
                 continue
             }
-            this.ctx.fillStyle = TrainColor[trainColor]
+            this.ctx.fillStyle = COLOR_MAP[trainColor]
             this.ctx.fillRect(x, y, widthPiece, h)
             x += widthPiece
         }

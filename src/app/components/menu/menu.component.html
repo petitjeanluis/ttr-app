@@ -24,17 +24,25 @@
 </ng-conatiner>
 
 <ng-conatiner *ngIf="showDestinationCards">
-    <div class="row">
-        <div *ngFor="let destination of getDestinations(); let i = index" 
-        (click)="cardSelected(i)" [ngClass]="isSelected(i) ? 'color-border' : null" class="card" style="cursor: pointer">
-            {{ destination.value }}
-            <br/>
-            {{ getCityName(destination.city1) }} --> {{ getCityName(destination.city2) }}
+    <ng-conatiner *ngIf="getDestinations()">
+        <div class="row">
+            <div *ngFor="let destination of getDestinations(); let i = index" 
+            (click)="cardSelected(i)" [ngClass]="isSelected(i) ? 'color-border' : null" class="card" style="cursor: pointer">
+                {{ destination.value }}
+                <br/>
+                {{ getCityName(destination.city1) }} --> {{ getCityName(destination.city2) }}
+            </div>
         </div>
-    </div>
-    <div class="row" style="justify-content: center">
-        <div class="ok-button" (click)="submitSelection()">
-            Select
+        <div class="row" style="justify-content: center">
+            <div class="ok-button" (click)="submitSelection()">
+                Select
+            </div>
         </div>
-    </div>
+    </ng-conatiner>
+
+    <ng-conatiner *ngIf="getDestinations() == null">
+        <h2>
+            Cards Selected! Waiting for other players to slect initial destination cards!
+        </h2>
+    </ng-conatiner>
 </ng-conatiner>
